@@ -16,15 +16,6 @@
 
 package com.android.example.github.ui.search;
 
-import com.android.example.github.R;
-import com.android.example.github.binding.FragmentDataBindingComponent;
-import com.android.example.github.databinding.SearchFragmentBinding;
-import com.android.example.github.di.Injectable;
-import com.android.example.github.ui.common.NavigationController;
-import com.android.example.github.ui.common.RepoListAdapter;
-import com.android.example.github.util.AutoClearedValue;
-
-import android.arch.lifecycle.LifecycleFragment;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -34,6 +25,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,9 +36,17 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import com.android.example.github.R;
+import com.android.example.github.binding.FragmentDataBindingComponent;
+import com.android.example.github.databinding.SearchFragmentBinding;
+import com.android.example.github.di.Injectable;
+import com.android.example.github.ui.common.NavigationController;
+import com.android.example.github.ui.common.RepoListAdapter;
+import com.android.example.github.util.AutoClearedValue;
+
 import javax.inject.Inject;
 
-public class SearchFragment extends LifecycleFragment implements Injectable {
+public class SearchFragment extends Fragment implements Injectable {
 
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -155,6 +155,7 @@ public class SearchFragment extends LifecycleFragment implements Injectable {
         if (activity != null) {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(
                     Context.INPUT_METHOD_SERVICE);
+            assert imm != null;
             imm.hideSoftInputFromWindow(windowToken, 0);
         }
     }
