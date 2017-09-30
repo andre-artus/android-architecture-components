@@ -15,7 +15,11 @@
  */
 
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco'
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
@@ -57,6 +61,8 @@ jacoco {
 }
 
 dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+
     implementation "com.android.support:appcompat-v7:$support_version"
     implementation "com.android.support:recyclerview-v7:$support_version"
     implementation "com.android.support:cardview-v7:$support_version"
@@ -76,15 +82,17 @@ dependencies {
 
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    annotationProcessor "com.google.dagger:dagger-android-processor:$dagger_version"
-    annotationProcessor "com.google.dagger:dagger-compiler:$dagger_version"
-    annotationProcessor "android.arch.persistence.room:compiler:$arch_version"
-    annotationProcessor "android.arch.lifecycle:compiler:$arch_version"
-    annotationProcessor "com.android.databinding:compiler:+"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "android.arch.persistence.room:compiler:$arch_version"
+    kapt "android.arch.lifecycle:compiler:$arch_version"
+    kapt "com.android.databinding:compiler:+"
+
+
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
-    testImplementation ("android.arch.core:core-testing:$arch_version", {
+    testImplementation("android.arch.core:core-testing:$arch_version", {
         exclude group: 'com.android.support', module: 'support-compat'
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-core-utils'
@@ -136,4 +144,7 @@ task fullCoverageReport(type: JacocoReport) {
             "jacoco/testDebugUnitTest.exec",
             "outputs/code-coverage/connected/*coverage.ec"
     ])
+}
+repositories {
+    mavenCentral()
 }

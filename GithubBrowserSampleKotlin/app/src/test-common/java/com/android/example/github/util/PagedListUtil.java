@@ -15,8 +15,9 @@ public class PagedListUtil {
                 .setBackgroundThreadExecutor(AppToolkitTaskExecutor.getIOThreadExecutor())
                 .setMainThreadExecutor(AppToolkitTaskExecutor.getMainThreadExecutor())
                 .setDataSource(new TiledDataSource<T>() {
+
                     @Override
-                    public int loadCount() {
+                    public int countItems() {
                         return source.size();
                     }
 
