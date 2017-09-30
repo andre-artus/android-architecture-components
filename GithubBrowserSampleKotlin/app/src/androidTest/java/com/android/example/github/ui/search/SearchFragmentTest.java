@@ -16,8 +16,17 @@
 
 package com.android.example.github.ui.search;
 
+import android.arch.lifecycle.MutableLiveData;
+import android.support.annotation.NonNull;
+import android.support.test.espresso.contrib.RecyclerViewActions;
+import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.test.rule.ActivityTestRule;
+import android.support.test.runner.AndroidJUnit4;
+import android.view.KeyEvent;
+
 import com.android.example.github.R;
 import com.android.example.github.binding.FragmentBindingAdapters;
+import com.android.example.github.binding.FragmentDataBindingComponent;
 import com.android.example.github.testing.SingleFragmentActivity;
 import com.android.example.github.ui.common.NavigationController;
 import com.android.example.github.util.RecyclerViewMatcher;
@@ -31,15 +40,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import android.arch.lifecycle.MutableLiveData;
-import android.support.annotation.NonNull;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.contrib.RecyclerViewActions;
-import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
-import android.view.KeyEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,6 +75,7 @@ public class SearchFragmentTest {
 
     private MutableLiveData<Resource<List<Repo>>> results = new MutableLiveData<>();
     private MutableLiveData<SearchViewModel.LoadMoreState> loadMoreStatus = new MutableLiveData<>();
+    private FragmentDataBindingComponent fragmentDataBindingComponent;
 
     @Before
     public void init() {
@@ -84,10 +85,14 @@ public class SearchFragmentTest {
         when(viewModel.getResults()).thenReturn(results);
 
         fragmentBindingAdapters = mock(FragmentBindingAdapters.class);
+        fragmentDataBindingComponent = mock(FragmentDataBindingComponent.class);
+        when(fragmentDataBindingComponent.getFragmentBindingAdapters()).thenReturn(fragmentBindingAdapters);
+
         navigationController = mock(NavigationController.class);
-        searchFragment.viewModelFactory = ViewModelUtil.createFor(viewModel);
-        searchFragment.dataBindingComponent = () -> fragmentBindingAdapters;
-        searchFragment.navigationController = navigationController;
+
+        searchFragment.setViewModelFactory(ViewModelUtil.createFor(viewModel));
+        searchFragment.setDataBindingComponent(fragmentDataBindingComponent);
+        searchFragment.setNavigationController(navigationController);
         activityRule.getActivity().setFragment(searchFragment);
     }
 

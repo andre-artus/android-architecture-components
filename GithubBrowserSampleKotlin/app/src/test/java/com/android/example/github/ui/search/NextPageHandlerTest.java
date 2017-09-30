@@ -83,7 +83,7 @@ public class NextPageHandlerTest {
 
         pageHandler.onChanged(Resource.success(true));
         assertThat(liveData.hasActiveObservers(), is(false));
-        assertThat(pageHandler.hasMore, is(true));
+        assertThat(pageHandler.getHasMore(), is(true));
         assertThat(getStatus().isRunning(), is(false));
         assertThat(liveData.hasActiveObservers(), is(false));
 
@@ -96,7 +96,7 @@ public class NextPageHandlerTest {
 
         pageHandler.onChanged(Resource.success(false));
         assertThat(liveData.hasActiveObservers(), is(false));
-        assertThat(pageHandler.hasMore, is(false));
+        assertThat(pageHandler.getHasMore(), is(false));
         assertThat(getStatus().isRunning(), is(false));
         assertThat(nextPage.hasActiveObservers(), is(false));
 
@@ -125,7 +125,7 @@ public class NextPageHandlerTest {
         assertThat(getStatus().getErrorMessageIfNotHandled(), is("idk"));
         assertThat(getStatus().getErrorMessageIfNotHandled(), nullValue());
         assertThat(getStatus().isRunning(), is(false));
-        assertThat(pageHandler.hasMore, is(true));
+        assertThat(pageHandler.getHasMore(), is(true));
 
         reset(repository);
         MutableLiveData<Resource<Boolean>> liveData2 = enqueueResponse("foo");
@@ -135,7 +135,7 @@ public class NextPageHandlerTest {
         pageHandler.onChanged(Resource.success(false));
         assertThat(getStatus().isRunning(), is(false));
         assertThat(getStatus().getErrorMessage(), is(nullValue()));
-        assertThat(pageHandler.hasMore, is(false));
+        assertThat(pageHandler.getHasMore(), is(false));
     }
 
     @Test
