@@ -37,7 +37,7 @@ import javax.inject.Inject
 /**
  * The UI Controller for displaying a Github Repo's information with its contributors.
  */
-class RepoFragment : Fragment(), Injectable {
+class RepoFragment : Fragment(), LifecycleRegistryOwner, Injectable {
 
     private val lifecycleRegistry = LifecycleRegistry(this)
 
