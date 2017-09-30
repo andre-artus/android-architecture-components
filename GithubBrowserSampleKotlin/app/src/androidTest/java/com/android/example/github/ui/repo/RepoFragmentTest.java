@@ -78,7 +78,7 @@ public class RepoFragmentTest {
 
     @Before
     public void init() {
-        repoFragment = RepoFragment.create("a", "b");
+        repoFragment = RepoFragment.Companion.create("a", "b");
         viewModel = mock(RepoViewModel.class);
         fragmentBindingAdapters = mock(FragmentBindingAdapters.class);
         navigationController = mock(NavigationController.class);
@@ -86,9 +86,9 @@ public class RepoFragmentTest {
         when(viewModel.getRepo()).thenReturn(repo);
         when(viewModel.getContributors()).thenReturn(contributors);
 
-        repoFragment.viewModelFactory = ViewModelUtil.createFor(viewModel);
-        repoFragment.dataBindingComponent = () -> fragmentBindingAdapters;
-        repoFragment.navigationController = navigationController;
+        repoFragment.setViewModelFactory(ViewModelUtil.createFor(viewModel));
+        repoFragment.setDataBindingComponent(() -> fragmentBindingAdapters);
+        repoFragment.setNavigationController(navigationController);
 
         activityRule.getActivity().setFragment(repoFragment);
     }

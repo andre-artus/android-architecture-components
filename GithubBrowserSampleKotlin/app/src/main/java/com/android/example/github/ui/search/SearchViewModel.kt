@@ -128,7 +128,9 @@ internal constructor(repoRepository: RepoRepository) : ViewModel() {
                         loadMoreState.setValue(LoadMoreState(false,
                                                              result.message))
                     }
-                    Status.LOADING -> TODO()
+                    Status.LOADING -> {
+
+                    }
                 }
             }
         }

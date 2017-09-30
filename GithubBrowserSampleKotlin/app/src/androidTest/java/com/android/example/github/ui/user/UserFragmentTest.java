@@ -18,6 +18,7 @@ package com.android.example.github.ui.user;
 
 import com.android.example.github.R;
 import com.android.example.github.binding.FragmentBindingAdapters;
+import com.android.example.github.binding.FragmentDataBindingComponent;
 import com.android.example.github.testing.SingleFragmentActivity;
 import com.android.example.github.ui.common.NavigationController;
 import com.android.example.github.util.RecyclerViewMatcher;
@@ -64,6 +65,7 @@ public class UserFragmentTest {
     private FragmentBindingAdapters fragmentBindingAdapters;
     private MutableLiveData<Resource<User>> userData = new MutableLiveData<>();
     private MutableLiveData<Resource<List<Repo>>> repoListData = new MutableLiveData<>();
+    private FragmentDataBindingComponent fragmentDataBindingComponent;
 
     @Before
     public void init() {
@@ -72,11 +74,14 @@ public class UserFragmentTest {
         when(viewModel.getUser()).thenReturn(userData);
         when(viewModel.getRepositories()).thenReturn(repoListData);
         navigationController = mock(NavigationController.class);
+
         fragmentBindingAdapters = mock(FragmentBindingAdapters.class);
+        fragmentDataBindingComponent = mock(FragmentDataBindingComponent.class);
+        when(fragmentDataBindingComponent.getFragmentBindingAdapters()).thenReturn(fragmentBindingAdapters);
 
         fragment.setViewModelFactory(ViewModelUtil.createFor(viewModel));
         fragment.setNavigationController(navigationController);
-        fragment.setDataBindingComponent(() -> fragmentBindingAdapters);
+        fragment.setDataBindingComponent(fragmentDataBindingComponent);
 
         activityRule.getActivity().setFragment(fragment);
     }

@@ -46,7 +46,7 @@ public class NavigationController {
     }
 
     public void navigateToRepo(String owner, String name) {
-        RepoFragment fragment = RepoFragment.create(owner, name);
+        RepoFragment fragment = RepoFragment.Companion.create(owner, name);
         String tag = "repo" + "/" + owner + "/" + name;
         fragmentManager.beginTransaction()
                 .replace(containerId, fragment, tag)

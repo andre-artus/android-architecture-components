@@ -54,7 +54,7 @@ constructor(userRepository: UserRepository, repoRepository: RepoRepository) : Vi
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-    fun setLogin(login: String) {
+    fun setLogin(login: String?) {
         if (Objects.equals(this.login.value, login)) {
             return
         }

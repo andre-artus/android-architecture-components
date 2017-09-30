@@ -115,7 +115,7 @@ public class RepoViewModelTest {
     @Test
     public void resetId() {
         Observer<RepoViewModel.RepoId> observer = mock(Observer.class);
-        repoViewModel.repoId.observeForever(observer);
+        repoViewModel.getRepoId().observeForever(observer);
         verifyNoMoreInteractions(observer);
         repoViewModel.setId("foo", "bar");
         verify(observer).onChanged(new RepoViewModel.RepoId("foo", "bar"));
