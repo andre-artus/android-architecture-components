@@ -168,7 +168,7 @@ public class UserViewModelTest {
     @Test
     public void dontRefreshOnSameData() {
         Observer<String> observer = mock(Observer.class);
-        userViewModel.login.observeForever(observer);
+        userViewModel.getLogin().observeForever(observer);
         verifyNoMoreInteractions(observer);
         userViewModel.setLogin("foo");
         verify(observer).onChanged("foo");

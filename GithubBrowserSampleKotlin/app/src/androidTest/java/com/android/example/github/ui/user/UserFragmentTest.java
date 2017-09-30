@@ -67,16 +67,16 @@ public class UserFragmentTest {
 
     @Before
     public void init() {
-        UserFragment fragment = UserFragment.create("foo");
+        UserFragment fragment = UserFragment.Companion.create("foo");
         viewModel = mock(UserViewModel.class);
         when(viewModel.getUser()).thenReturn(userData);
         when(viewModel.getRepositories()).thenReturn(repoListData);
         navigationController = mock(NavigationController.class);
         fragmentBindingAdapters = mock(FragmentBindingAdapters.class);
 
-        fragment.viewModelFactory = ViewModelUtil.createFor(viewModel);
-        fragment.navigationController = navigationController;
-        fragment.dataBindingComponent = () -> fragmentBindingAdapters;
+        fragment.setViewModelFactory(ViewModelUtil.createFor(viewModel));
+        fragment.setNavigationController(navigationController);
+        fragment.setDataBindingComponent(() -> fragmentBindingAdapters);
 
         activityRule.getActivity().setFragment(fragment);
     }

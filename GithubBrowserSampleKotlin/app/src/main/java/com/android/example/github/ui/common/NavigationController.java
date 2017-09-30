@@ -56,7 +56,7 @@ public class NavigationController {
 
     public void navigateToUser(String login) {
         String tag = "user" + "/" + login;
-        UserFragment userFragment = UserFragment.create(login);
+        UserFragment userFragment = UserFragment.Companion.create(login);
         fragmentManager.beginTransaction()
                 .replace(containerId, userFragment, tag)
                 .addToBackStack(null)
