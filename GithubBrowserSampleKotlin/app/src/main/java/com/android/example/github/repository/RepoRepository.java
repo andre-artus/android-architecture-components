@@ -223,7 +223,7 @@ public class RepoRepository {
 
             @Override
             protected RepoSearchResponse processResponse(ApiResponse<RepoSearchResponse> response) {
-                RepoSearchResponse body = response.getBody();
+                RepoSearchResponse body = response.body;
                 if (body != null) {
                     body.setNextPage(response.getNextPage());
                 }

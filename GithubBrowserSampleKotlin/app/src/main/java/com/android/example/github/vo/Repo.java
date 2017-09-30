@@ -21,6 +21,7 @@ import com.google.gson.annotations.SerializedName;
 import android.arch.persistence.room.Embedded;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
+import android.support.annotation.NonNull;
 
 import javax.annotation.Nonnull;
 import javax.inject.Inject;
@@ -35,6 +36,7 @@ public class Repo {
     public static final int UNKNOWN_ID = -1;
     public final int id;
     @Nonnull
+    @NonNull
     @SerializedName("name")
     public final String name;
     @SerializedName("full_name")
@@ -43,8 +45,9 @@ public class Repo {
     public final String description;
     @SerializedName("stargazers_count")
     public final int stars;
-    @SerializedName("owner")
     @Nonnull
+    @NonNull
+    @SerializedName("owner")
     @Embedded(prefix = "owner_")
     public final Owner owner;
 
@@ -58,6 +61,8 @@ public class Repo {
     }
 
     public static class Owner {
+        @Nonnull
+        @NonNull
         @SerializedName("login")
         public final String login;
         @SerializedName("url")

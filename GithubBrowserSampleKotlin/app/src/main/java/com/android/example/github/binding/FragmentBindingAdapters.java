@@ -14,20 +14,28 @@
  * limitations under the License.
  */
 
-package com.android.example.github.db
+package com.android.example.github.binding;
 
-import android.arch.persistence.room.TypeConverter
-import android.arch.persistence.room.util.StringUtil
+import android.databinding.BindingAdapter;
+import android.support.v4.app.Fragment;
+import android.widget.ImageView;
 
-import java.util.Collections
+import com.bumptech.glide.Glide;
 
-class GithubTypeConverters {
-    @TypeConverter
-    fun stringToIntList(data: String?): List<Int>? = when (data) {
-        null -> emptyList()
-        else -> StringUtil.splitToIntList(data)
+import javax.inject.Inject;
+
+/**
+ * Binding adapters that work with a fragment instance.
+ */
+public class FragmentBindingAdapters {
+    final Fragment fragment;
+
+    @Inject
+    public FragmentBindingAdapters(Fragment fragment) {
+        this.fragment = fragment;
     }
-
-    @TypeConverter
-    fun intListToString(ints: List<Int>): String? = StringUtil.joinIntoString(ints)
+    @BindingAdapter("imageUrl")
+    public void bindImage(ImageView imageView, String url) {
+        Glide.with(fragment).load(url).into(imageView);
+    }
 }

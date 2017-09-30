@@ -14,23 +14,23 @@
  * limitations under the License.
  */
 
-package com.android.example.github.db
+package com.android.example.github.db;
 
-import com.android.example.github.vo.Contributor
-import com.android.example.github.vo.Repo
-import com.android.example.github.vo.RepoSearchResult
-import com.android.example.github.vo.User
-
-import android.arch.persistence.room.Database
-import android.arch.persistence.room.RoomDatabase
+import com.android.example.github.vo.User;
+import android.arch.lifecycle.LiveData;
+import android.arch.persistence.room.Dao;
+import android.arch.persistence.room.Insert;
+import android.arch.persistence.room.OnConflictStrategy;
+import android.arch.persistence.room.Query;
 
 /**
- * Main database description.
+ * Interface for database access for User related operations.
  */
-@Database(entities = arrayOf(User::class, Repo::class, Contributor::class, RepoSearchResult::class), version = 3)
-abstract class GithubDb : RoomDatabase() {
+@Dao
+public interface UserDao {
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    void insert(User user);
 
-    abstract fun userDao(): UserDao
-
-    abstract fun repoDao(): RepoDao
+    @Query("SELECT * FROM user WHERE login = :login")
+    LiveData<User> findByLogin(String login);
 }

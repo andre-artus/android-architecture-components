@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package com.android.example.github.binding
+package com.android.example.github.db;
 
-import android.databinding.BindingAdapter
-import android.support.v4.app.Fragment
-import android.widget.ImageView
 
-import com.bumptech.glide.Glide
+import com.android.example.github.vo.Contributor;
+import com.android.example.github.vo.Repo;
+import com.android.example.github.vo.RepoSearchResult;
+import com.android.example.github.vo.User;
 
-import javax.inject.Inject
+import android.arch.persistence.room.Database;
+import android.arch.persistence.room.RoomDatabase;
 
 /**
- * Binding adapters that work with a fragment instance.
+ * Main database description.
  */
-class FragmentBindingAdapters @Inject
-constructor(internal val fragment: Fragment) {
-    @BindingAdapter("imageUrl")
-    fun bindImage(imageView: ImageView, url: String) {
-        Glide.with(fragment).load(url).into(imageView)
-    }
+@Database(entities = {User.class, Repo.class, Contributor.class,
+        RepoSearchResult.class}, version = 3)
+public abstract class GithubDb extends RoomDatabase {
+
+    abstract public UserDao userDao();
+
+    abstract public RepoDao repoDao();
 }

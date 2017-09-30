@@ -14,25 +14,18 @@
  * limitations under the License.
  */
 
-package com.android.example.github.api
+package com.android.example.github.binding;
 
-import com.google.gson.annotations.SerializedName
-
-import com.android.example.github.vo.Repo
+import android.databinding.BindingAdapter;
+import android.view.View;
+import android.widget.ImageView;
 
 /**
- * POJO to hold repo search responses. This is different from the Entity in the database because
- * we are keeping a search result in 1 row and denormalizing list of results into a single column.
+ * Data Binding adapters specific to the app.
  */
-class RepoSearchResponse {
-    @SerializedName("total_count")
-    var total: Int = 0
-    @SerializedName("items")
-    var items: List<Repo>? = null
-    var nextPage: Int? = null
-
-    val repoIds: List<Int>
-        get() {
-            return items?.map { it.id } ?: emptyList()
-        }
+public class BindingAdapters {
+    @BindingAdapter("visibleGone")
+    public static void showHide(View view, boolean show) {
+        view.setVisibility(show ? View.VISIBLE : View.GONE);
+    }
 }

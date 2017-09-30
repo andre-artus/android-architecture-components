@@ -18,13 +18,13 @@ package com.android.example.github.vo;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Index;
-import com.google.gson.annotations.SerializedName;
+import android.support.annotation.NonNull;
 
-import javax.annotation.Nonnull;
+import com.google.gson.annotations.SerializedName;
 
 @Entity(primaryKeys = "login")
 public class User {
-    @Nonnull
+    @NonNull
     @SerializedName("login")
     public final String login;
     @SerializedName("avatar_url")
