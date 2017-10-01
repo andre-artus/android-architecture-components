@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package com.android.example.github.db;
+package com.android.example.github.db
 
-import android.arch.persistence.room.TypeConverter;
-import android.arch.persistence.room.util.StringUtil;
+import android.arch.persistence.room.TypeConverter
+import android.arch.persistence.room.util.StringUtil
 
-import java.util.Collections;
-import java.util.List;
-
-public class GithubTypeConverters {
+object GithubTypeConverters {
+    @JvmStatic
     @TypeConverter
-    public static List<Integer> stringToIntList(String data) {
-        if (data == null) {
-            return Collections.emptyList();
-        }
-        return StringUtil.splitToIntList(data);
+    fun stringToIntList(data: String?): List<Int>? {
+        return if (data == null) {
+            emptyList()
+        } else StringUtil.splitToIntList(data)
     }
 
+    @JvmStatic
     @TypeConverter
-    public static String intListToString(List<Integer> ints) {
-        return StringUtil.joinIntoString(ints);
+    fun intListToString(ints: List<Int>): String? {
+        return StringUtil.joinIntoString(ints)
     }
 }
