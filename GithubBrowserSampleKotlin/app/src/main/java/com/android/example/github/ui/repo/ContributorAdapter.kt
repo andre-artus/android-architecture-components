@@ -36,8 +36,9 @@ class ContributorAdapter(private val dataBindingComponent: DataBindingComponent,
 
     override fun areContentsTheSame(oldItem: Contributor,
                                     newItem: Contributor): Boolean {
-        return Objects.equals(oldItem.avatarUrl, newItem.avatarUrl) && oldItem.contributions == newItem.contributions
-    }}) {
+        return oldItem == newItem
+    }
+}) {
 
     override fun createBinding(parent: ViewGroup): ContributorItemBinding {
         val binding = DataBindingUtil

@@ -14,26 +14,27 @@
  * limitations under the License.
  */
 
-package com.android.example.github.di;
+package com.android.example.github.di
 
-import com.android.example.github.ui.repo.RepoViewModel;
-import com.android.example.github.ui.search.SearchViewModel;
-import com.android.example.github.ui.user.UserViewModel;
+import com.android.example.github.ui.repo.RepoViewModel
+import com.android.example.github.ui.search.SearchViewModel
+import com.android.example.github.ui.user.UserViewModel
 
-import dagger.Subcomponent;
+import dagger.Subcomponent
 
 /**
  * A sub component to create ViewModels. It is called by the
- * {@link com.android.example.github.viewmodel.GithubViewModelFactory}. Using this component allows
- * ViewModels to define {@link javax.inject.Inject} constructors.
+ * [com.android.example.github.viewmodel.GithubViewModelFactory]. Using this component allows
+ * ViewModels to define [javax.inject.Inject] constructors.
  */
 @Subcomponent
-public interface ViewModelSubComponent {
+interface ViewModelSubComponent {
     @Subcomponent.Builder
     interface Builder {
-        ViewModelSubComponent build();
+        fun build(): ViewModelSubComponent
     }
-    UserViewModel userViewModel();
-    SearchViewModel searchViewModel();
-    RepoViewModel repoViewModel();
+
+    fun userViewModel(): UserViewModel
+    fun searchViewModel(): SearchViewModel
+    fun repoViewModel(): RepoViewModel
 }

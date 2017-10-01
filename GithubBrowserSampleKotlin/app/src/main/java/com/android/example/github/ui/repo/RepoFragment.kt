@@ -30,10 +30,12 @@ import com.android.example.github.binding.FragmentDataBindingComponent
 import com.android.example.github.databinding.RepoFragmentBinding
 import com.android.example.github.di.Injectable
 import com.android.example.github.ui.common.NavigationController
+import com.android.example.github.ui.common.RetryCallback
 import com.android.example.github.util.AutoClearedValue
 import com.android.example.github.vo.Contributor
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 /**
  * The UI Controller for displaying a Github Repo's information with its contributors.
  */
@@ -106,9 +108,14 @@ class RepoFragment : Fragment(), LifecycleRegistryOwner, Injectable {
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val dataBinding = DataBindingUtil
-                .inflate<RepoFragmentBinding>(inflater!!, R.layout.repo_fragment, container, false)
-        dataBinding.setRetryCallback { repoViewModel.retry() }
+        val dataBinding: RepoFragmentBinding = DataBindingUtil.inflate<RepoFragmentBinding>(inflater!!, R.layout.repo_fragment, container, false)
+        dataBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                repoViewModel.retry()
+            }
+        }
+
+
         binding = AutoClearedValue(this, dataBinding)
         return dataBinding.root
     }

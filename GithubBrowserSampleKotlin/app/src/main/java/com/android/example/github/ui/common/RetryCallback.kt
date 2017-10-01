@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-package com.android.example.github.ui.common;
+package com.android.example.github.ui.common
 
 /**
  * Generic interface for retry buttons.
  */
-public interface RetryCallback {
-    void retry();
+interface RetryCallback {
+    fun retry()
 }

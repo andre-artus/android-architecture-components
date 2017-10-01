@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-package com.android.example.github.di;
+package com.android.example.github.di
 
-import com.android.example.github.MainActivity;
+import com.android.example.github.MainActivity
 
-import dagger.Module;
-import dagger.android.ContributesAndroidInjector;
+import dagger.Module
+import dagger.android.ContributesAndroidInjector
 
 @Module
-public abstract class MainActivityModule {
-    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
-    abstract MainActivity contributeMainActivity();
+abstract class MainActivityModule {
+    @ContributesAndroidInjector(modules = arrayOf(FragmentBuildersModule::class))
+    internal abstract fun contributeMainActivity(): MainActivity
 }

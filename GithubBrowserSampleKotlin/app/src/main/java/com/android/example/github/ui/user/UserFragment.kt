@@ -32,7 +32,9 @@ import com.android.example.github.databinding.UserFragmentBinding
 import com.android.example.github.di.Injectable
 import com.android.example.github.ui.common.NavigationController
 import com.android.example.github.ui.common.RepoListAdapter
+import com.android.example.github.ui.common.RetryCallback
 import com.android.example.github.util.AutoClearedValue
+import com.android.example.github.vo.Repo
 import javax.inject.Inject
 
 class UserFragment : Fragment(), Injectable {
@@ -50,7 +52,12 @@ class UserFragment : Fragment(), Injectable {
                               savedInstanceState: Bundle?): View? {
         val dataBinding = DataBindingUtil.inflate<UserFragmentBinding>(inflater, R.layout.user_fragment,
                                                                        container, false, dataBindingComponent)
-        dataBinding.setRetryCallback { userViewModel.retry() }
+        dataBinding.retryCallback = object : RetryCallback {
+            override fun retry() {
+                userViewModel.retry()
+
+            }
+        }
         binding = AutoClearedValue(this, dataBinding)
         return dataBinding.root
     }
@@ -65,9 +72,11 @@ class UserFragment : Fragment(), Injectable {
             // this is only necessary because espresso cannot read data binding callbacks.
             binding.get().executePendingBindings()
         })
-        val rvAdapter = RepoListAdapter(dataBindingComponent, false) {
-            navigationController.navigateToRepo(it.owner.login, it.name)
-        }
+        val rvAdapter = RepoListAdapter(dataBindingComponent, false, object: RepoListAdapter.RepoClickCallback {
+            override fun onClick(repo: Repo) {
+                navigationController.navigateToRepo(repo.owner.login, repo.name)
+            }
+        })
         binding.get().repoList.adapter = rvAdapter
         this.adapter = AutoClearedValue(this, rvAdapter)
         initRepoList()

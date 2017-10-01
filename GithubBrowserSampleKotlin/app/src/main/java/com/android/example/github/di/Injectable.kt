@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-package com.android.example.github.di;
+package com.android.example.github.di
 
 /**
  * Marks an activity / fragment injectable.
  */
-public interface Injectable {
-}
+interface Injectable

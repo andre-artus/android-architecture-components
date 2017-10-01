@@ -14,29 +14,27 @@
  * limitations under the License.
  */
 
-package com.android.example.github.di;
+package com.android.example.github.di
 
-import com.android.example.github.GithubApp;
-
-import android.app.Application;
-
-import javax.inject.Singleton;
-
-import dagger.BindsInstance;
-import dagger.Component;
-import dagger.android.AndroidInjectionModule;
+import android.app.Application
+import com.android.example.github.GithubApp
+import dagger.BindsInstance
+import dagger.Component
+import dagger.android.AndroidInjectionModule
+import javax.inject.Singleton
 
 @Singleton
-@Component(modules = {
-        AndroidInjectionModule.class,
-        AppModule.class,
-        MainActivityModule.class
-})
-public interface AppComponent {
+@Component(modules = arrayOf(AndroidInjectionModule::class,
+                             AppModule::class,
+                             MainActivityModule::class))
+interface AppComponent {
     @Component.Builder
     interface Builder {
-        @BindsInstance Builder application(Application application);
-        AppComponent build();
+        @BindsInstance
+        fun application(application: Application): Builder
+
+        fun build(): AppComponent
     }
-    void inject(GithubApp githubApp);
+
+    fun inject(githubApp: GithubApp)
 }

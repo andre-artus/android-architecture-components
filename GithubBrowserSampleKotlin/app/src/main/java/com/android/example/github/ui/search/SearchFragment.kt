@@ -37,6 +37,7 @@ import com.android.example.github.databinding.SearchFragmentBinding
 import com.android.example.github.di.Injectable
 import com.android.example.github.ui.common.NavigationController
 import com.android.example.github.ui.common.RepoListAdapter
+import com.android.example.github.ui.common.RetryCallback
 import com.android.example.github.util.AutoClearedValue
 import com.android.example.github.vo.Repo
 import com.android.example.github.vo.Resource
@@ -71,15 +72,21 @@ class SearchFragment : Fragment(), Injectable {
         super.onActivityCreated(savedInstanceState)
         searchViewModel = ViewModelProviders.of(this, viewModelFactory).get(SearchViewModel::class.java)
         initRecyclerView()
-        val rvAdapter = RepoListAdapter(dataBindingComponent, true) { repo ->
-            navigationController.navigateToRepo(repo.owner.login, repo.name)
-        }
+        val rvAdapter = RepoListAdapter(dataBindingComponent, true, object : RepoListAdapter.RepoClickCallback {
+            override fun onClick(repo: Repo) {
+                navigationController.navigateToRepo(repo.owner.login, repo.name)
+            }
+        })
         binding.get().repoList.adapter = rvAdapter
         adapter = AutoClearedValue(this, rvAdapter)
 
         initSearchInputListener()
 
-        binding.get().setCallback { searchViewModel!!.refresh() }
+        binding.get().callback = object : RetryCallback {
+            override fun retry() {
+                searchViewModel!!.refresh()
+            }
+        }
     }
 
     private fun initSearchInputListener() {
