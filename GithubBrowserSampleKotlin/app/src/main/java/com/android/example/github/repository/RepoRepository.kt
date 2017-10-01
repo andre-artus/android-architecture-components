@@ -74,7 +74,7 @@ constructor(private val appExecutors: AppExecutors,
         }.asLiveData()
     }
 
-    fun loadRepo(owner: String, name: String): LiveData<Resource<Repo>> {
+    fun loadRepo(owner: String?, name: String?): LiveData<Resource<Repo>> {
         return object : NetworkBoundResource<Repo, Repo>(appExecutors) {
             override fun saveCallResult(item: Repo) {
                 repoDao.insert(item)
@@ -89,7 +89,7 @@ constructor(private val appExecutors: AppExecutors,
             }
 
             override fun createCall(): LiveData<ApiResponse<Repo>> {
-                return githubService.getRepo(owner, name)
+                return githubService.getRepo(owner!!, name!!)
             }
         }.asLiveData()
     }

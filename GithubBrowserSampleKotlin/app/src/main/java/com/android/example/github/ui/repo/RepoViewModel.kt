@@ -40,13 +40,13 @@ constructor(repository: RepoRepository) : ViewModel() {
     init {
         repo = Transformations.switchMap(repoId) { input ->
             when {
-                input.isEmpty -> AbsentLiveData.create<Resource<Repo>>()
+                input.isEmpty -> AbsentLiveData.create()
                 else -> repository.loadRepo(input.owner, input.name)
             }
         }
         contributors = Transformations.switchMap(repoId) { input ->
-            if (input.isEmpty) {
-                AbsentLiveData.create<Resource<PagedList<Contributor>>>()
+            if (input.isEmpty || input.owner == null || input.name == null) {
+                AbsentLiveData.create()
             } else {
                 repository.loadContributors(input.owner, input.name)
             }
@@ -55,7 +55,7 @@ constructor(repository: RepoRepository) : ViewModel() {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     fun retry() {
-        val current = repoId.value
+        val current: RepoId? = repoId.value
         if (current != null && !current.isEmpty) {
             repoId.value = current
         }
@@ -72,8 +72,8 @@ constructor(repository: RepoRepository) : ViewModel() {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     class RepoId(owner: String?, name: String?) {
-        val owner: String = owner?.trim { it <= ' ' } ?: ""
-        val name: String = name?.trim { it <= ' ' } ?: ""
+        val owner: String? = owner?.trim { it <= ' ' }
+        val name: String? = name?.trim { it <= ' ' }
 
         val isEmpty: Boolean
             get() = owner == null || name == null || owner.isEmpty() || name.isEmpty()

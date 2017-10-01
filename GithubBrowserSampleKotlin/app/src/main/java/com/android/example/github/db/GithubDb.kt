@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-package com.android.example.github.db;
+package com.android.example.github.db
 
+import com.android.example.github.vo.Contributor
+import com.android.example.github.vo.Repo
+import com.android.example.github.vo.RepoSearchResult
+import com.android.example.github.vo.User
 
-import com.android.example.github.vo.Contributor;
-import com.android.example.github.vo.Repo;
-import com.android.example.github.vo.RepoSearchResult;
-import com.android.example.github.vo.User;
-
-import android.arch.persistence.room.Database;
-import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.Database
+import android.arch.persistence.room.RoomDatabase
 
 /**
  * Main database description.
  */
-@Database(entities = {User.class, Repo.class, Contributor.class,
-        RepoSearchResult.class}, version = 4)
-public abstract class GithubDb extends RoomDatabase {
+@Database(entities = arrayOf(User::class, Repo::class, Contributor::class, RepoSearchResult::class), version = 4)
+abstract class GithubDb : RoomDatabase() {
 
-    abstract public UserDao userDao();
+    abstract fun userDao(): UserDao
 
-    abstract public RepoDao repoDao();
+    abstract fun repoDao(): RepoDao
 }
