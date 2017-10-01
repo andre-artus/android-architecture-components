@@ -131,8 +131,7 @@ constructor(private val appExecutors: AppExecutors,
     }
 
     fun searchNextPage(query: String): LiveData<Resource<Boolean>> {
-        val fetchNextSearchPageTask = FetchNextSearchPageTask(
-                query, githubService, db)
+        val fetchNextSearchPageTask = FetchNextSearchPageTask(query, githubService, db)
         appExecutors.networkIO().execute(fetchNextSearchPageTask)
         return fetchNextSearchPageTask.liveData
     }
