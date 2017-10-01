@@ -142,11 +142,10 @@ constructor(private val appExecutors: AppExecutors,
 
             override fun saveCallResult(item: RepoSearchResponse) {
                 val repoIds = item.repoIds
-                val repoSearchResult = RepoSearchResult(
-                        query, repoIds, item.total, item.nextPage)
+                val repoSearchResult = RepoSearchResult(query, repoIds, item.total, item.nextPage)
                 db.beginTransaction()
                 try {
-                    repoDao.insertRepos(item.items)
+                    item.items?.let { repoDao.insertRepos(it) }
                     repoDao.insert(repoSearchResult)
                     db.setTransactionSuccessful()
                 } finally {
