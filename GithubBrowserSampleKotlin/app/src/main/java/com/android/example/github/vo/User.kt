@@ -27,7 +27,7 @@ class User(@field:SerializedName("login")
            @field:SerializedName("avatar_url")
            val avatarUrl: String?,
            @field:SerializedName("name")
-           val name: String,
+           val name: String?,
            @field:SerializedName("company")
            val company: String?,
            @field:SerializedName("repos_url")

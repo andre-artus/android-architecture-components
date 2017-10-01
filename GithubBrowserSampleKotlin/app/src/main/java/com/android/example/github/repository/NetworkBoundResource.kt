@@ -55,7 +55,7 @@ internal constructor(private val appExecutors: AppExecutors) {
     private fun fetchFromNetwork(dbSource: LiveData<ResultType>) {
         val apiResponse = createCall()
         // we re-attach dbSource as a new source, it will dispatch its latest value quickly
-        result.addSource(dbSource) { newData -> result.setValue(Resource.loading(newData)) }
+        result.addSource(dbSource) { result.setValue(Resource.loading(it)) }
         result.addSource(apiResponse) { response ->
             result.removeSource(apiResponse)
             result.removeSource(dbSource)
@@ -67,14 +67,16 @@ internal constructor(private val appExecutors: AppExecutors) {
                         // we specially request a new live data,
                         // otherwise we will get immediately last cached value,
                         // which may not be updated with latest results received from network.
-                        result.addSource(loadFromDb()
-                                        ) { newData -> result.setValue(Resource.success(newData)) }
+                        result.addSource(loadFromDb()) {
+                            result.setValue(Resource.success(it))
+                        }
                     }
                 }
             } else {
                 onFetchFailed()
-                result.addSource(dbSource
-                                ) { newData -> result.setValue(Resource.error(response.errorMessage, newData)) }
+                result.addSource(dbSource) {
+                    result.setValue(Resource.error(response.errorMessage, it))
+                }
             }
         }
     }
