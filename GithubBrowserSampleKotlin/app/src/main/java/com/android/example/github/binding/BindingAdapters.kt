@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.android.example.github.binding;
+package com.android.example.github.binding
 
-import android.databinding.BindingAdapter;
-import android.view.View;
-import android.widget.ImageView;
+import android.databinding.BindingAdapter
+import android.view.View
 
 /**
  * Data Binding adapters specific to the app.
  */
-public class BindingAdapters {
+object BindingAdapters {
+    @JvmStatic
     @BindingAdapter("visibleGone")
-    public static void showHide(View view, boolean show) {
-        view.setVisibility(show ? View.VISIBLE : View.GONE);
+    fun showHide(view: View, show: Boolean) {
+        view.visibility = if (show) View.VISIBLE else View.GONE
     }
 }
