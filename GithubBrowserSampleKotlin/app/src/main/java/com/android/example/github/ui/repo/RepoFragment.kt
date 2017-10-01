@@ -39,9 +39,7 @@ import javax.inject.Inject
 /**
  * The UI Controller for displaying a Github Repo's information with its contributors.
  */
-class RepoFragment : Fragment(), LifecycleRegistryOwner, Injectable {
-
-    private val lifecycleRegistry = LifecycleRegistry(this)
+class RepoFragment : Fragment(), Injectable {
 
     @Inject
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
@@ -58,10 +56,6 @@ class RepoFragment : Fragment(), LifecycleRegistryOwner, Injectable {
     internal lateinit var binding: AutoClearedValue<RepoFragmentBinding>
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     lateinit var adapter: AutoClearedValue<ContributorAdapter>
-
-    override fun getLifecycle(): LifecycleRegistry {
-        return lifecycleRegistry
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
