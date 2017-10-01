@@ -89,7 +89,7 @@ public class RepoRepositoryTest {
         MutableLiveData<Repo> dbData = new MutableLiveData<>();
         when(dao.load("foo", "bar")).thenReturn(dbData);
 
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
         LiveData<ApiResponse<Repo>> call = successCall(repo);
         when(service.getRepo("foo", "bar")).thenReturn(call);
 
@@ -100,7 +100,7 @@ public class RepoRepositoryTest {
         Observer observer = mock(Observer.class);
         data.observeForever(observer);
         verifyNoMoreInteractions(service);
-        verify(observer).onChanged(Resource.loading(null));
+        verify(observer).onChanged(Resource.Companion.loading(null));
         MutableLiveData<Repo> updatedDbData = new MutableLiveData<>();
         when(dao.load("foo", "bar")).thenReturn(updatedDbData);
 
@@ -109,7 +109,7 @@ public class RepoRepositoryTest {
         verify(dao).insert(repo);
 
         updatedDbData.postValue(repo);
-        verify(observer).onChanged(Resource.success(repo));
+        verify(observer).onChanged(Resource.Companion.success(repo));
     }
 
     @Test
@@ -127,8 +127,8 @@ public class RepoRepositoryTest {
 
         verify(service, never()).getContributors(anyString(), anyString());
 
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
-        Contributor contributor = TestUtil.createContributor(repo, "log", 3);
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
+        Contributor contributor = TestUtil.INSTANCE.createContributor(repo, "log", 3);
         // network does not send these
         contributor.setRepoOwner(null);
         contributor.setRepoName(null);
@@ -140,7 +140,7 @@ public class RepoRepositoryTest {
         Observer<Resource<PagedList<Contributor>>> observer = mock(Observer.class);
         data.observeForever(observer);
 
-        verify(observer).onChanged(Resource.loading( null));
+        verify(observer).onChanged(Resource.Companion.loading( null));
 
         dbData.setValue(PagedListUtil.from(Collections.emptyList()));
 
@@ -155,7 +155,7 @@ public class RepoRepositoryTest {
         assertThat(first.getRepoOwner(), is("foo"));
 
         dbData.setValue(PagedListUtil.from(contributors));
-        verify(observer).onChanged(Resource.success(PagedListUtil.from(contributors)));
+        verify(observer).onChanged(Resource.Companion.success(PagedListUtil.from(contributors)));
     }
 
     @Test
@@ -178,7 +178,7 @@ public class RepoRepositoryTest {
 
         repository.search("foo").observeForever(observer);
 
-        verify(observer).onChanged(Resource.loading(null));
+        verify(observer).onChanged(Resource.Companion.loading(null));
         verifyNoMoreInteractions(service);
         reset(observer);
 
@@ -189,15 +189,15 @@ public class RepoRepositoryTest {
 
         List<Repo> repoList = new ArrayList<>();
         repositories.postValue(repoList);
-        verify(observer).onChanged(Resource.success(repoList));
+        verify(observer).onChanged(Resource.Companion.success(repoList));
         verifyNoMoreInteractions(service);
     }
 
     @Test
     public void search_fromServer() {
         List<Integer> ids = Arrays.asList(1, 2);
-        Repo repo1 = TestUtil.createRepo(1, "owner", "repo 1", "desc 1");
-        Repo repo2 = TestUtil.createRepo(2, "owner", "repo 2", "desc 2");
+        Repo repo1 = TestUtil.INSTANCE.createRepo(1, "owner", "repo 1", "desc 1");
+        Repo repo2 = TestUtil.INSTANCE.createRepo(2, "owner", "repo 2", "desc 2");
 
         Observer<Resource<List<Repo>>> observer = mock(Observer.class);
         MutableLiveData<RepoSearchResult> dbSearchResult = new MutableLiveData<>();
@@ -215,7 +215,7 @@ public class RepoRepositoryTest {
 
         repository.search("foo").observeForever(observer);
 
-        verify(observer).onChanged(Resource.loading(null));
+        verify(observer).onChanged(Resource.Companion.loading(null));
         verifyNoMoreInteractions(service);
         reset(observer);
 
@@ -231,21 +231,21 @@ public class RepoRepositoryTest {
         callLiveData.postValue(new ApiResponse<>(Response.success(apiResponse)));
         verify(dao).insertRepos(repoList);
         repositories.postValue(repoList);
-        verify(observer).onChanged(Resource.success(repoList));
+        verify(observer).onChanged(Resource.Companion.success(repoList));
         verifyNoMoreInteractions(service);
     }
 
     @Test
     public void search_fromServer_error() {
-        when(dao.search("foo")).thenReturn(AbsentLiveData.create());
+        when(dao.search("foo")).thenReturn(AbsentLiveData.Companion.create());
         MutableLiveData<ApiResponse<RepoSearchResponse>> apiResponse = new MutableLiveData<>();
         when(service.searchRepos("foo")).thenReturn(apiResponse);
 
         Observer<Resource<List<Repo>>> observer = mock(Observer.class);
         repository.search("foo").observeForever(observer);
-        verify(observer).onChanged(Resource.loading(null));
+        verify(observer).onChanged(Resource.Companion.loading(null));
 
         apiResponse.postValue(new ApiResponse<>(new Exception("idk")));
-        verify(observer).onChanged(Resource.error("idk", null));
+        verify(observer).onChanged(Resource.Companion.error("idk", null));
     }
 }

@@ -26,6 +26,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "com.android.example.github.util.GithubTestRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         debug {
@@ -83,7 +88,7 @@ dependencies {
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
-    testImplementation ("android.arch.core:core-testing:$arch_version", {
+    testImplementation("android.arch.core:core-testing:$arch_version", {
         exclude group: 'com.android.support', module: 'support-compat'
         exclude group: 'com.android.support', module: 'support-annotations'
         exclude group: 'com.android.support', module: 'support-core-utils'

@@ -34,11 +34,11 @@ class RepoListAdapter(private val dataBindingComponent: DataBindingComponent,
                       private val showFullName: Boolean,
                       private val repoClickCallback: RepoClickCallback) : DataBoundListAdapter<Repo, RepoItemBinding>(object : DiffCallback<Repo>() {
     override fun areItemsTheSame(oldItem: Repo, newItem: Repo): Boolean {
-        return Objects.equals(oldItem.owner, newItem.owner) && Objects.equals(oldItem.name, newItem.name)
+        return oldItem.owner == newItem.owner && oldItem.name ==  newItem.name
     }
 
     override fun areContentsTheSame(oldItem: Repo, newItem: Repo): Boolean {
-        return Objects.equals(oldItem.description, newItem.description) && oldItem.stars == newItem.stars
+        return oldItem == newItem
     }
 
 }) {

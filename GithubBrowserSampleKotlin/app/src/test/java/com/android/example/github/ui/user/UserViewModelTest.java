@@ -96,14 +96,14 @@ public class UserViewModelTest {
         userViewModel.getUser().observeForever(observer);
         userViewModel.setLogin("foo");
         verify(observer, never()).onChanged(any(Resource.class));
-        User fooUser = TestUtil.createUser("foo");
-        Resource<User> fooValue = Resource.success(fooUser);
+        User fooUser = TestUtil.INSTANCE.createUser("foo");
+        Resource<User> fooValue = Resource.Companion.success(fooUser);
 
         foo.setValue(fooValue);
         verify(observer).onChanged(fooValue);
         reset(observer);
-        User barUser = TestUtil.createUser("bar");
-        Resource<User> barValue = Resource.success(barUser);
+        User barUser = TestUtil.INSTANCE.createUser("bar");
+        Resource<User> barValue = Resource.Companion.success(barUser);
         bar.setValue(barValue);
         userViewModel.setLogin("bar");
         verify(observer).onChanged(barValue);

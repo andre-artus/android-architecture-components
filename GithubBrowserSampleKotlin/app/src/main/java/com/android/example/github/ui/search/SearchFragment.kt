@@ -77,12 +77,12 @@ class SearchFragment : Fragment(), Injectable {
                 navigationController.navigateToRepo(repo.owner.login, repo.name)
             }
         })
-        binding.get().repoList.adapter = rvAdapter
+        binding.get()!!.repoList.adapter = rvAdapter
         adapter = AutoClearedValue(this, rvAdapter)
 
         initSearchInputListener()
 
-        binding.get().callback = object : RetryCallback {
+        binding.get()!!.callback = object : RetryCallback {
             override fun retry() {
                 searchViewModel!!.refresh()
             }
@@ -90,7 +90,7 @@ class SearchFragment : Fragment(), Injectable {
     }
 
     private fun initSearchInputListener() {
-        binding.get().input.setOnEditorActionListener { v, actionId, _ ->
+        binding.get()!!.input.setOnEditorActionListener { v, actionId, _ ->
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
                     doSearch(v)
@@ -99,7 +99,7 @@ class SearchFragment : Fragment(), Injectable {
                 else -> false
             }
         }
-        binding.get().input.setOnKeyListener { v, keyCode, event ->
+        binding.get()!!.input.setOnKeyListener { v, keyCode, event ->
             return@setOnKeyListener when {
                 event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER -> {
                     doSearch(v)
@@ -111,21 +111,21 @@ class SearchFragment : Fragment(), Injectable {
     }
 
     private fun doSearch(v: View) {
-        val query = binding.get().input.text.toString()
+        val query = binding.get()!!.input.text.toString()
         // Dismiss keyboard
         dismissKeyboard(v.windowToken)
-        binding.get().query = query
+        binding.get()!!.query = query
         searchViewModel!!.setQuery(query)
     }
 
     private fun initRecyclerView() {
 
-        binding.get().repoList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        binding.get()!!.repoList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 val layoutManager = recyclerView!!.layoutManager as LinearLayoutManager
                 val lastPosition = layoutManager
                         .findLastVisibleItemPosition()
-                if (lastPosition == adapter.get().itemCount - 1) {
+                if (lastPosition == adapter.get()!!.itemCount - 1) {
                     searchViewModel!!.loadNextPage()
                 }
             }
@@ -134,27 +134,27 @@ class SearchFragment : Fragment(), Injectable {
         searchViewModel!!.results.observe(
                 this,
                 Observer { result: Resource<List<Repo>>? ->
-                    binding.get().searchResource = result
-                    binding.get().resultCount = if (result?.data == null)
+                    binding.get()!!.searchResource = result
+                    binding.get()!!.resultCount = if (result?.data == null)
                         0
                     else
                         result.data.size
 
-                    adapter.get().setList(if (result == null) null else result.data)
-                    binding.get().executePendingBindings()
+                    adapter.get()!!.setList(if (result == null) null else result.data)
+                    binding.get()!!.executePendingBindings()
                 })
 
         searchViewModel!!.loadMoreStatus.observe(this, Observer { loadingMore ->
             if (loadingMore == null) {
-                binding.get().loadingMore = false
+                binding.get()!!.loadingMore = false
             } else {
-                binding.get().loadingMore = loadingMore.isRunning
+                binding.get()!!.loadingMore = loadingMore.isRunning
                 val error = loadingMore.errorMessageIfNotHandled
                 if (error != null) {
-                    Snackbar.make(binding.get().loadMoreBar, error, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(binding.get()!!.loadMoreBar, error, Snackbar.LENGTH_LONG).show()
                 }
             }
-            binding.get().executePendingBindings()
+            binding.get()!!.executePendingBindings()
         })
 
     }

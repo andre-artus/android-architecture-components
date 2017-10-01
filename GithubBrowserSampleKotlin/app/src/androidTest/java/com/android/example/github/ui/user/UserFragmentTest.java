@@ -88,14 +88,14 @@ public class UserFragmentTest {
 
     @Test
     public void loading() {
-        userData.postValue(Resource.loading(null));
+        userData.postValue(Resource.Companion.loading(null));
         onView(withId(R.id.progress_bar)).check(matches(isDisplayed()));
         onView(withId(R.id.retry)).check(matches(not(isDisplayed())));
     }
 
     @Test
     public void error() {
-        userData.postValue(Resource.error("wtf", null));
+        userData.postValue(Resource.Companion.error("wtf", null));
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
         onView(withId(R.id.error_msg)).check(matches(withText("wtf")));
         onView(withId(R.id.retry)).check(matches(isDisplayed()));
@@ -105,17 +105,17 @@ public class UserFragmentTest {
 
     @Test
     public void loadingWithUser() {
-        User user = TestUtil.createUser("foo");
-        userData.postValue(Resource.loading(user));
-        onView(withId(R.id.name)).check(matches(withText(user.name)));
+        User user = TestUtil.INSTANCE.createUser("foo");
+        userData.postValue(Resource.Companion.loading(user));
+        onView(withId(R.id.name)).check(matches(withText(user.getName())));
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
     }
 
     @Test
     public void loadedUser() {
-        User user = TestUtil.createUser("foo");
-        userData.postValue(Resource.success(user));
-        onView(withId(R.id.name)).check(matches(withText(user.name)));
+        User user = TestUtil.INSTANCE.createUser("foo");
+        userData.postValue(Resource.Companion.success(user));
+        onView(withId(R.id.name)).check(matches(withText(user.getName())));
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
     }
 
@@ -125,23 +125,23 @@ public class UserFragmentTest {
         for (int pos = 0; pos < repos.size(); pos ++) {
             Repo repo = repos.get(pos);
             onView(listMatcher().atPosition(pos)).check(
-                    matches(hasDescendant(withText(repo.name))));
+                    matches(hasDescendant(withText(repo.getName()))));
             onView(listMatcher().atPosition(pos)).check(
-                    matches(hasDescendant(withText(repo.description))));
+                    matches(hasDescendant(withText(repo.getDescription()))));
             onView(listMatcher().atPosition(pos)).check(
-                    matches(hasDescendant(withText("" + repo.stars))));
+                    matches(hasDescendant(withText("" + repo.getStars()))));
         }
         Repo repo3 = setRepos(3).get(2);
         onView(listMatcher().atPosition(2)).check(
-                matches(hasDescendant(withText(repo3.name))));
+                matches(hasDescendant(withText(repo3.getName()))));
     }
 
     @Test
     public void clickRepo() {
         List<Repo> repos = setRepos(2);
         Repo selected = repos.get(1);
-        onView(withText(selected.description)).perform(click());
-        verify(navigationController).navigateToRepo(selected.owner.login, selected.name);
+        onView(withText(selected.getDescription())).perform(click());
+        verify(navigationController).navigateToRepo(selected.getOwner().getLogin(), selected.getName());
     }
 
     @Test
@@ -158,9 +158,9 @@ public class UserFragmentTest {
 
     @Test
     public void nulledUser() {
-        User user = TestUtil.createUser("foo");
-        userData.postValue(Resource.success(user));
-        onView(withId(R.id.name)).check(matches(withText(user.name)));
+        User user = TestUtil.INSTANCE.createUser("foo");
+        userData.postValue(Resource.Companion.success(user));
+        onView(withId(R.id.name)).check(matches(withText(user.getName())));
         userData.postValue(null);
         onView(withId(R.id.name)).check(matches(not(isDisplayed())));
     }
@@ -181,9 +181,9 @@ public class UserFragmentTest {
     private List<Repo> setRepos(int count) {
         List<Repo> repos = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            repos.add(TestUtil.createRepo("foo", "name " + i, "desc" + i));
+            repos.add(TestUtil.INSTANCE.createRepo("foo", "name " + i, "desc" + i));
         }
-        repoListData.postValue(Resource.success(repos));
+        repoListData.postValue(Resource.Companion.success(repos));
         return repos;
     }
 }

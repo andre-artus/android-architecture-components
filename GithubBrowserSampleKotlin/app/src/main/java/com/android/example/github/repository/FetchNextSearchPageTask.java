@@ -54,9 +54,9 @@ public class FetchNextSearchPageTask implements Runnable {
             liveData.postValue(null);
             return;
         }
-        final Integer nextPage = current.next;
+        final Integer nextPage = current.getNext();
         if (nextPage == null) {
-            liveData.postValue(Resource.success(false));
+            liveData.postValue(Resource.Companion.success(false));
             return;
         }
         try {
@@ -66,7 +66,7 @@ public class FetchNextSearchPageTask implements Runnable {
             if (apiResponse.isSuccessful()) {
                 // we merge all repo ids into 1 list so that it is easier to fetch the result list.
                 List<Integer> ids = new ArrayList<>();
-                ids.addAll(current.repoIds);
+                ids.addAll(current.getRepoIds());
                 //noinspection ConstantConditions
                 ids.addAll(apiResponse.getBody().getRepoIds());
                 RepoSearchResult merged = new RepoSearchResult(query, ids,
@@ -79,12 +79,12 @@ public class FetchNextSearchPageTask implements Runnable {
                 } finally {
                     db.endTransaction();
                 }
-                liveData.postValue(Resource.success(apiResponse.getNextPage() != null));
+                liveData.postValue(Resource.Companion.success(apiResponse.getNextPage() != null));
             } else {
-                liveData.postValue(Resource.error(apiResponse.getErrorMessage(), true));
+                liveData.postValue(Resource.Companion.error(apiResponse.getErrorMessage(), true));
             }
         } catch (IOException e) {
-            liveData.postValue(Resource.error(e.getMessage(), true));
+            liveData.postValue(Resource.Companion.error(e.getMessage(), true));
         }
     }
 

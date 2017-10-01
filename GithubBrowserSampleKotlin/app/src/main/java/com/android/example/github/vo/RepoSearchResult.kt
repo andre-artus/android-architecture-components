@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-package com.android.example.github.util;
+package com.android.example.github.vo
 
-public class Objects {
-    public static boolean equals(Object o1, Object o2) {
-        if (o1 == null) {
-            return o2 == null;
-        }
-        if (o2 == null) {
-            return false;
-        }
-        return o1.equals(o2);
-    }
-}
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.TypeConverters
+import com.android.example.github.db.GithubTypeConverters
+
+@Entity(primaryKeys = arrayOf("query"))
+@TypeConverters(GithubTypeConverters::class)
+class RepoSearchResult(val query: String, val repoIds: List<Int>, val totalCount: Int, val next: Int?)

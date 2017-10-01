@@ -145,12 +145,12 @@ public class NetworkBoundResourceTest {
         Observer<Resource<Foo>> observer = Mockito.mock(Observer.class);
         networkBoundResource.asLiveData().observeForever(observer);
         drain();
-        verify(observer).onChanged(Resource.loading(null));
+        verify(observer).onChanged(Resource.Companion.loading(null));
         reset(observer);
         dbData.setValue(null);
         drain();
         assertThat(saved.get(), is(networkResult));
-        verify(observer).onChanged(Resource.success(fetchedDbValue));
+        verify(observer).onChanged(Resource.Companion.success(fetchedDbValue));
     }
 
     @Test
@@ -167,12 +167,12 @@ public class NetworkBoundResourceTest {
         Observer<Resource<Foo>> observer = Mockito.mock(Observer.class);
         networkBoundResource.asLiveData().observeForever(observer);
         drain();
-        verify(observer).onChanged(Resource.loading(null));
+        verify(observer).onChanged(Resource.Companion.loading(null));
         reset(observer);
         dbData.setValue(null);
         drain();
         assertThat(saved.get(), is(false));
-        verify(observer).onChanged(Resource.error("error", null));
+        verify(observer).onChanged(Resource.Companion.error("error", null));
         verifyNoMoreInteractions(observer);
     }
 
@@ -188,17 +188,17 @@ public class NetworkBoundResourceTest {
         Observer<Resource<Foo>> observer = Mockito.mock(Observer.class);
         networkBoundResource.asLiveData().observeForever(observer);
         drain();
-        verify(observer).onChanged(Resource.loading(null));
+        verify(observer).onChanged(Resource.Companion.loading(null));
         reset(observer);
         Foo dbFoo = new Foo(1);
         dbData.setValue(dbFoo);
         drain();
-        verify(observer).onChanged(Resource.success(dbFoo));
+        verify(observer).onChanged(Resource.Companion.success(dbFoo));
         assertThat(saved.get(), is(false));
         Foo dbFoo2 = new Foo(2);
         dbData.setValue(dbFoo2);
         drain();
-        verify(observer).onChanged(Resource.success(dbFoo2));
+        verify(observer).onChanged(Resource.Companion.success(dbFoo2));
         verifyNoMoreInteractions(observer);
     }
 
@@ -218,22 +218,22 @@ public class NetworkBoundResourceTest {
         Observer<Resource<Foo>> observer = Mockito.mock(Observer.class);
         networkBoundResource.asLiveData().observeForever(observer);
         drain();
-        verify(observer).onChanged(Resource.loading(null));
+        verify(observer).onChanged(Resource.Companion.loading(null));
         reset(observer);
 
         dbData.setValue(dbValue);
         drain();
-        verify(observer).onChanged(Resource.loading(dbValue));
+        verify(observer).onChanged(Resource.Companion.loading(dbValue));
 
         apiResponseLiveData.setValue(new ApiResponse<>(Response.error(400, body)));
         drain();
         assertThat(saved.get(), is(false));
-        verify(observer).onChanged(Resource.error("error", dbValue));
+        verify(observer).onChanged(Resource.Companion.error("error", dbValue));
 
         Foo dbValue2 = new Foo(2);
         dbData.setValue(dbValue2);
         drain();
-        verify(observer).onChanged(Resource.error("error", dbValue2));
+        verify(observer).onChanged(Resource.Companion.error("error", dbValue2));
         verifyNoMoreInteractions(observer);
     }
 
@@ -254,17 +254,17 @@ public class NetworkBoundResourceTest {
         Observer<Resource<Foo>> observer = Mockito.mock(Observer.class);
         networkBoundResource.asLiveData().observeForever(observer);
         drain();
-        verify(observer).onChanged(Resource.loading(null));
+        verify(observer).onChanged(Resource.Companion.loading(null));
         reset(observer);
 
         dbData.setValue(dbValue);
         drain();
         final Foo networkResult = new Foo(1);
-        verify(observer).onChanged(Resource.loading(dbValue));
+        verify(observer).onChanged(Resource.Companion.loading(dbValue));
         apiResponseLiveData.setValue(new ApiResponse<>(Response.success(networkResult)));
         drain();
         assertThat(saved.get(), is(networkResult));
-        verify(observer).onChanged(Resource.success(dbValue2));
+        verify(observer).onChanged(Resource.Companion.success(dbValue2));
         verifyNoMoreInteractions(observer);
     }
 

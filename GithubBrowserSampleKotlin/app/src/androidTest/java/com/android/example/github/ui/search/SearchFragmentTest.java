@@ -102,36 +102,36 @@ public class SearchFragmentTest {
         onView(withId(R.id.input)).perform(typeText("foo"),
                 pressKey(KeyEvent.KEYCODE_ENTER));
         verify(viewModel).setQuery("foo");
-        results.postValue(Resource.loading(null));
+        results.postValue(Resource.Companion.loading(null));
         onView(withId(R.id.progress_bar)).check(matches(isDisplayed()));
     }
 
     @Test
     public void loadResults() {
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
-        results.postValue(Resource.success(Arrays.asList(repo)));
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
+        results.postValue(Resource.Companion.success(Arrays.asList(repo)));
         onView(listMatcher().atPosition(0)).check(matches(hasDescendant(withText("foo/bar"))));
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
     }
 
     @Test
     public void dataWithLoading() {
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
-        results.postValue(Resource.loading(Arrays.asList(repo)));
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
+        results.postValue(Resource.Companion.loading(Arrays.asList(repo)));
         onView(listMatcher().atPosition(0)).check(matches(hasDescendant(withText("foo/bar"))));
         onView(withId(R.id.progress_bar)).check(matches(not(isDisplayed())));
     }
 
     @Test
     public void error() {
-        results.postValue(Resource.error("failed to load", null));
+        results.postValue(Resource.Companion.error("failed to load", null));
         onView(withId(R.id.error_msg)).check(matches(isDisplayed()));
     }
 
     @Test
     public void loadMore() throws Throwable {
-        List<Repo> repos = TestUtil.createRepos(50, "foo", "barr", "desc");
-        results.postValue(Resource.success(repos));
+        List<Repo> repos = TestUtil.INSTANCE.createRepos(50, "foo", "barr", "desc");
+        results.postValue(Resource.Companion.success(repos));
         onView(withId(R.id.repo_list)).perform(RecyclerViewActions.scrollToPosition(49));
         onView(listMatcher().atPosition(49)).check(matches(isDisplayed()));
         verify(viewModel).loadNextPage();
@@ -139,8 +139,8 @@ public class SearchFragmentTest {
 
     @Test
     public void navigateToRepo() throws Throwable {
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
-        results.postValue(Resource.success(Arrays.asList(repo)));
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
+        results.postValue(Resource.Companion.success(Arrays.asList(repo)));
         onView(withText("desc")).perform(click());
         verify(navigationController).navigateToRepo("foo", "bar");
     }

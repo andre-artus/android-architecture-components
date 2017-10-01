@@ -14,43 +14,45 @@
  * limitations under the License.
  */
 
-package com.android.example.github.util;
+package com.android.example.github.util
 
-import android.os.SystemClock;
-import android.support.v4.util.ArrayMap;
+import android.os.SystemClock
+import android.support.v4.util.ArrayMap
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeUnit
 
 /**
  * Utility class that decides whether we should fetch some data or not.
  */
-public class RateLimiter<KEY> {
-    private ArrayMap<KEY, Long> timestamps = new ArrayMap<>();
-    private final long timeout;
+class RateLimiter<KEY>(timeout: Int, timeUnit: TimeUnit) {
+    private val timestamps = ArrayMap<KEY, Long>()
+    private val timeout: Long
 
-    public RateLimiter(int timeout, TimeUnit timeUnit) {
-        this.timeout = timeUnit.toMillis(timeout);
+    init {
+        this.timeout = timeUnit.toMillis(timeout.toLong())
     }
 
-    public synchronized boolean shouldFetch(KEY key) {
-        Long lastFetched = timestamps.get(key);
-        long now = now();
+    @Synchronized
+    fun shouldFetch(key: KEY): Boolean {
+        val lastFetched = timestamps[key]
+        val now = now()
         if (lastFetched == null) {
-            timestamps.put(key, now);
-            return true;
+            timestamps.put(key, now)
+            return true
         }
         if (now - lastFetched > timeout) {
-            timestamps.put(key, now);
-            return true;
+            timestamps.put(key, now)
+            return true
         }
-        return false;
+        return false
     }
 
-    private long now() {
-        return SystemClock.uptimeMillis();
+    private fun now(): Long {
+        return SystemClock.uptimeMillis()
     }
 
-    public synchronized void reset(KEY key) {
-        timestamps.remove(key);
+    @Synchronized
+    fun reset(key: KEY) {
+        timestamps.remove(key)
     }
 }

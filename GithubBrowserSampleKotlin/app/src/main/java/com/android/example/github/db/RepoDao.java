@@ -79,8 +79,8 @@ public abstract class RepoDao {
         }
         return Transformations.map(loadById(repoIds), repositories -> {
             Collections.sort(repositories, (r1, r2) -> {
-                int pos1 = order.get(r1.id);
-                int pos2 = order.get(r2.id);
+                int pos1 = order.get(r1.getId());
+                int pos2 = order.get(r2.getId());
                 return pos1 - pos2;
             });
             return repositories;

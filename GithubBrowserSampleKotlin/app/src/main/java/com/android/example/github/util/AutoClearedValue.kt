@@ -14,33 +14,30 @@
  * limitations under the License.
  */
 
-package com.android.example.github.util;
+package com.android.example.github.util
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 
 /**
  * A value holder that automatically clears the reference if the Fragment's view is destroyed.
  * @param <T>
- */
-public class AutoClearedValue<T> {
-    private T value;
-    public AutoClearedValue(Fragment fragment, T value) {
-        FragmentManager fragmentManager = fragment.getFragmentManager();
+</T> */
+class AutoClearedValue<out T>(fragment: Fragment, private var value: T?) {
+    init {
+        val fragmentManager = fragment.fragmentManager
         fragmentManager.registerFragmentLifecycleCallbacks(
-                new FragmentManager.FragmentLifecycleCallbacks() {
-                    @Override
-                    public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {
-                        if (f == fragment) {
-                            AutoClearedValue.this.value = null;
-                            fragmentManager.unregisterFragmentLifecycleCallbacks(this);
+                object : FragmentManager.FragmentLifecycleCallbacks() {
+                    override fun onFragmentViewDestroyed(fm: FragmentManager?, f: Fragment?) {
+                        if (f === fragment) {
+                            this@AutoClearedValue.value = null
+                            fragmentManager.unregisterFragmentLifecycleCallbacks(this)
                         }
                     }
-                },false);
-        this.value = value;
+                }, false)
     }
 
-    public T get() {
-        return value;
+    fun get(): T? {
+        return value
     }
 }

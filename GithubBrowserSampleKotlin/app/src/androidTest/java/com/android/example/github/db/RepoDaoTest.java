@@ -42,32 +42,32 @@ import java.util.Collections;
 public class RepoDaoTest extends DbTest {
     @Test
     public void insertAndRead() throws InterruptedException {
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
         db.repoDao().insert(repo);
         Repo loaded = getValue(db.repoDao().load("foo", "bar"));
         assertThat(loaded, notNullValue());
-        assertThat(loaded.name, is("bar"));
-        assertThat(loaded.description, is("desc"));
-        assertThat(loaded.owner, notNullValue());
-        assertThat(loaded.owner.login, is("foo"));
+        assertThat(loaded.getName(), is("bar"));
+        assertThat(loaded.getDescription(), is("desc"));
+        assertThat(loaded.getOwner(), notNullValue());
+        assertThat(loaded.getOwner().getLogin(), is("foo"));
     }
 
     @Test
     public void insertContributorsWithoutRepo() {
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
-        Contributor contributor = TestUtil.createContributor(repo, "c1", 3);
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
+        Contributor contributor = TestUtil.INSTANCE.createContributor(repo, "c1", 3);
         try {
             db.repoDao().insertContributors(Collections.singletonList(contributor));
             throw new AssertionError("must fail because repo does not exist");
-        } catch (SQLiteException ex) {
+        } catch (SQLiteException ignored) {
         }
     }
 
     @Test
     public void insertContributors() throws InterruptedException {
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
-        Contributor c1 = TestUtil.createContributor(repo, "c1", 3);
-        Contributor c2 = TestUtil.createContributor(repo, "c2", 7);
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
+        Contributor c1 = TestUtil.INSTANCE.createContributor(repo, "c1", 3);
+        Contributor c2 = TestUtil.INSTANCE.createContributor(repo, "c2", 7);
         db.beginTransaction();
         try {
             db.repoDao().insert(repo);
@@ -82,32 +82,34 @@ public class RepoDaoTest extends DbTest {
         assertThat(list.size(), is(2));
         Contributor first = list.get(0);
 
+        assert first != null;
         assertThat(first.getLogin(), is("c2"));
         assertThat(first.getContributions(), is(7));
 
         Contributor second = list.get(1);
+        assert second != null;
         assertThat(second.getLogin(), is("c1"));
         assertThat(second.getContributions(), is(3));
     }
 
     @Test
     public void createIfNotExists_exists() throws InterruptedException {
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
         db.repoDao().insert(repo);
         assertThat(db.repoDao().createRepoIfNotExists(repo), is(-1L));
     }
 
     @Test
     public void createIfNotExists_doesNotExist() {
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
         assertThat(db.repoDao().createRepoIfNotExists(repo), is(1L));
     }
 
     @Test
     public void insertContributorsThenUpdateRepo() throws InterruptedException {
-        Repo repo = TestUtil.createRepo("foo", "bar", "desc");
+        Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
         db.repoDao().insert(repo);
-        Contributor contributor = TestUtil.createContributor(repo, "aa", 3);
+        Contributor contributor = TestUtil.INSTANCE.createContributor(repo, "aa", 3);
         db.repoDao().insertContributors(Collections.singletonList(contributor));
 
         LivePagedListProvider<Integer, Contributor> provider =
@@ -115,7 +117,7 @@ public class RepoDaoTest extends DbTest {
         LiveData<PagedList<Contributor>> data = provider.create(null, 10);
         assertThat(getValue(data).size(), is(1));
 
-        Repo update = TestUtil.createRepo("foo", "bar", "desc");
+        Repo update = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
         db.repoDao().insert(update);
         assertThat(getValue(data).size(), is(1));
     }

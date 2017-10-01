@@ -29,8 +29,8 @@ buildscript {
     }
 }
 
-ext.arch_version = "1.0.0-beta1"
-ext.paging_version = "1.0.0-alpha2"
+ext.arch_version = "1.0.0-alpha9-1"
+ext.paging_version = "1.0.0-alpha1"
 ext.support_version = "26.1.0"
 ext.dagger_version = "2.11"
 ext.junit_version = "4.12"

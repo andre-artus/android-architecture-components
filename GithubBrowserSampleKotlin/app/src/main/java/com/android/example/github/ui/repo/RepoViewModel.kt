@@ -72,8 +72,8 @@ constructor(repository: RepoRepository) : ViewModel() {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     class RepoId(owner: String?, name: String?) {
-        val owner: String? = owner?.trim { it <= ' ' }
-        val name: String? = name?.trim { it <= ' ' }
+        val owner: String = owner?.trim { it <= ' ' } ?: ""
+        val name: String = name?.trim { it <= ' ' } ?: ""
 
         val isEmpty: Boolean
             get() = owner == null || name == null || owner.isEmpty() || name.isEmpty()

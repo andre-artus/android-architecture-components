@@ -14,19 +14,15 @@
  * limitations under the License.
  */
 
-package com.android.example.github.util;
+package com.android.example.github.util
 
-import android.arch.lifecycle.LiveData;
-
-/**
- * A LiveData class that has {@code null} value.
- */
-public class AbsentLiveData extends LiveData {
-    private AbsentLiveData() {
-        postValue(null);
-    }
-    public static <T> LiveData<T> create() {
-        //noinspection unchecked
-        return new AbsentLiveData();
+object Objects {
+    fun equals(o1: Any?, o2: Any?): Boolean {
+        if (o1 == null) {
+            return o2 == null
+        }
+        return if (o2 == null) {
+            false
+        } else o1 == o2
     }
 }

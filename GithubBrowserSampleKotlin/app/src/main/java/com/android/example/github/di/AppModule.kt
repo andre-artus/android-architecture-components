@@ -18,19 +18,16 @@ package com.android.example.github.di
 
 import android.app.Application
 import android.arch.persistence.room.Room
-
 import com.android.example.github.api.GithubService
 import com.android.example.github.db.GithubDb
 import com.android.example.github.db.RepoDao
 import com.android.example.github.db.UserDao
 import com.android.example.github.util.LiveDataCallAdapterFactory
-
-import javax.inject.Singleton
-
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module(includes = arrayOf(ViewModelModule::class))
 internal class AppModule {
@@ -48,7 +45,11 @@ internal class AppModule {
     @Singleton
     @Provides
     fun provideDb(app: Application): GithubDb {
-        return Room.databaseBuilder(app, GithubDb::class.java, "github.db").build()
+        return Room
+                //.databaseBuilder(app, GithubDb::class.java, "github.db")
+                .inMemoryDatabaseBuilder(app, GithubDb::class.java)
+                .fallbackToDestructiveMigration()
+                .build()
     }
 
     @Singleton

@@ -85,9 +85,9 @@ public class GithubServiceTest {
         assertThat(request.getPath(), is("/users/yigit"));
 
         assertThat(yigit, notNullValue());
-        assertThat(yigit.avatarUrl, is("https://avatars3.githubusercontent.com/u/89202?v=3"));
-        assertThat(yigit.company, is("Google"));
-        assertThat(yigit.blog, is("birbit.com"));
+        assertThat(yigit.getAvatarUrl(), is("https://avatars3.githubusercontent.com/u/89202?v=3"));
+        assertThat(yigit.getCompany(), is("Google"));
+        assertThat(yigit.getBlog(), is("birbit.com"));
     }
 
     @Test
@@ -98,18 +98,19 @@ public class GithubServiceTest {
         RecordedRequest request = mockWebServer.takeRequest();
         assertThat(request.getPath(), is("/users/yigit/repos"));
 
+        assert repos != null;
         assertThat(repos.size(), is(2));
 
         Repo repo = repos.get(0);
-        assertThat(repo.fullName, is("yigit/AckMate"));
+        assertThat(repo.getFullName(), is("yigit/AckMate"));
 
-        Repo.Owner owner = repo.owner;
+        Repo.Owner owner = repo.getOwner();
         assertThat(owner, notNullValue());
-        assertThat(owner.login, is("yigit"));
-        assertThat(owner.url, is("https://api.github.com/users/yigit"));
+        assertThat(owner.getLogin(), is("yigit"));
+        assertThat(owner.getUrl(), is("https://api.github.com/users/yigit"));
 
         Repo repo2 = repos.get(1);
-        assertThat(repo2.fullName, is("yigit/android-architecture"));
+        assertThat(repo2.getFullName(), is("yigit/android-architecture"));
     }
 
     @Test
@@ -117,6 +118,7 @@ public class GithubServiceTest {
         enqueueResponse("contributors.json");
         List<Contributor> contributors = getValue(
                 service.getContributors("foo", "bar")).getBody();
+        assert contributors != null;
         assertThat(contributors.size(), is(3));
         Contributor yigit = contributors.get(0);
         assertThat(yigit.getLogin(), is("yigit"));

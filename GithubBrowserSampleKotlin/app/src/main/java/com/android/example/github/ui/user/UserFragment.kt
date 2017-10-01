@@ -67,17 +67,17 @@ class UserFragment : Fragment(), Injectable {
         userViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel::class.java)
         userViewModel.setLogin(arguments.getString(LOGIN_KEY))
         userViewModel.user.observe(this, Observer { userResource ->
-            binding.get().user = userResource?.data
-            binding.get().userResource = userResource
+            binding.get()!!.user = userResource?.data
+            binding.get()!!.userResource = userResource
             // this is only necessary because espresso cannot read data binding callbacks.
-            binding.get().executePendingBindings()
+            binding.get()!!.executePendingBindings()
         })
         val rvAdapter = RepoListAdapter(dataBindingComponent, false, object: RepoListAdapter.RepoClickCallback {
             override fun onClick(repo: Repo) {
                 navigationController.navigateToRepo(repo.owner.login, repo.name)
             }
         })
-        binding.get().repoList.adapter = rvAdapter
+        binding.get()!!.repoList.adapter = rvAdapter
         this.adapter = AutoClearedValue(this, rvAdapter)
         initRepoList()
     }
@@ -87,9 +87,9 @@ class UserFragment : Fragment(), Injectable {
             // no null checks for adapter.get() since LiveData guarantees that we'll not receive
             // the event if fragment is now show.
             if (repos == null) {
-                adapter.get().setList(null)
+                adapter.get()!!.setList(null)
             } else {
-                adapter.get().setList(repos.data)
+                adapter.get()!!.setList(repos.data)
             }
         })
     }

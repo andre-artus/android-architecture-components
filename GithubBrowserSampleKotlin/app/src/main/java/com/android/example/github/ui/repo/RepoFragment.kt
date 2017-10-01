@@ -16,7 +16,9 @@
 
 package com.android.example.github.ui.repo
 
-import android.arch.lifecycle.*
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingComponent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
@@ -53,7 +55,9 @@ class RepoFragment : Fragment(), Injectable {
 
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     var dataBindingComponent: DataBindingComponent = FragmentDataBindingComponent(this)
+
     internal lateinit var binding: AutoClearedValue<RepoFragmentBinding>
+
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     lateinit var adapter: AutoClearedValue<ContributorAdapter>
 
@@ -70,9 +74,9 @@ class RepoFragment : Fragment(), Injectable {
         }
         val repo = repoViewModel.repo
         repo.observe(this, Observer { resource ->
-            binding.get().repo = resource?.data
-            binding.get().repoResource = resource
-            binding.get().executePendingBindings()
+            binding.get()!!.repo = resource?.data
+            binding.get()!!.repoResource = resource
+            binding.get()!!.executePendingBindings()
         })
 
         val adapter = ContributorAdapter(dataBindingComponent, object : ContributorAdapter.ContributorClickCallback {
@@ -83,7 +87,7 @@ class RepoFragment : Fragment(), Injectable {
 
 
         this.adapter = AutoClearedValue(this, adapter)
-        binding.get().contributorList.adapter = adapter
+        binding.get()!!.contributorList.adapter = adapter
         initContributorList(repoViewModel)
     }
 
@@ -92,17 +96,17 @@ class RepoFragment : Fragment(), Injectable {
             // we don't need any null checks here for the adapter since LiveData guarantees that
             // it won't call us if fragment is stopped or not started.
             if (listResource?.data != null) {
-                adapter.get().setList(listResource.data)
+                adapter.get()!!.setList(listResource.data)
             } else {
 
-                adapter.get().setList(null)
+                adapter.get()!!.setList(null)
             }
         })
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        val dataBinding: RepoFragmentBinding = DataBindingUtil.inflate<RepoFragmentBinding>(inflater!!, R.layout.repo_fragment, container, false)
+        val dataBinding = DataBindingUtil.inflate<RepoFragmentBinding>(inflater!!, R.layout.repo_fragment, container, false)
         dataBinding.retryCallback = object : RetryCallback {
             override fun retry() {
                 repoViewModel.retry()

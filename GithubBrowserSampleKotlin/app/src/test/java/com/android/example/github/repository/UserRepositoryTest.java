@@ -68,7 +68,7 @@ public class UserRepositoryTest {
     public void goToNetwork() {
         MutableLiveData<User> dbData = new MutableLiveData<>();
         when(userDao.findByLogin("foo")).thenReturn(dbData);
-        User user = TestUtil.createUser("foo");
+        User user = TestUtil.INSTANCE.createUser("foo");
         LiveData<ApiResponse<User>> call = ApiUtil.successCall(user);
         when(githubService.getUser("foo")).thenReturn(call);
         Observer<Resource<User>> observer = mock(Observer.class);
@@ -84,12 +84,12 @@ public class UserRepositoryTest {
     @Test
     public void dontGoToNetwork() {
         MutableLiveData<User> dbData = new MutableLiveData<>();
-        User user = TestUtil.createUser("foo");
+        User user = TestUtil.INSTANCE.createUser("foo");
         dbData.setValue(user);
         when(userDao.findByLogin("foo")).thenReturn(dbData);
         Observer<Resource<User>> observer = mock(Observer.class);
         repo.loadUser("foo").observeForever(observer);
         verify(githubService, never()).getUser("foo");
-        verify(observer).onChanged(Resource.success(user));
+        verify(observer).onChanged(Resource.Companion.success(user));
     }
 }

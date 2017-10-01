@@ -86,8 +86,8 @@ internal constructor(repoRepository: RepoRepository) : ViewModel() {
             }
     }
 
-    @VisibleForTesting
-    internal class NextPageHandler
+    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+     class NextPageHandler
     @VisibleForTesting
     constructor(private val repository: RepoRepository) : Observer<Resource<Boolean>> {
         private var nextPageLiveData: LiveData<Resource<Boolean>>? = null

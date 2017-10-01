@@ -33,16 +33,16 @@ public class UserDaoTest extends DbTest {
 
     @Test
     public void insertAndLoad() throws InterruptedException {
-        final User user = TestUtil.createUser("foo");
+        final User user = TestUtil.INSTANCE.createUser("foo");
         db.userDao().insert(user);
 
-        final User loaded = getValue(db.userDao().findByLogin(user.login));
-        assertThat(loaded.login, is("foo"));
+        final User loaded = getValue(db.userDao().findByLogin(user.getLogin()));
+        assertThat(loaded.getLogin(), is("foo"));
 
-        final User replacement = TestUtil.createUser("foo2");
+        final User replacement = TestUtil.INSTANCE.createUser("foo2");
         db.userDao().insert(replacement);
 
         final User loadedReplacement = getValue(db.userDao().findByLogin("foo2"));
-        assertThat(loadedReplacement.login, is("foo2"));
+        assertThat(loadedReplacement.getLogin(), is("foo2"));
     }
 }

@@ -93,7 +93,7 @@ public class FetchNextSearchPageTaskTest {
     public void noNextPage() {
         createDbResult(null);
         task.run();
-        verify(observer).onChanged(Resource.success(false));
+        verify(observer).onChanged(Resource.Companion.success(false));
         verifyNoMoreInteractions(observer);
         verifyNoMoreInteractions(service);
     }
@@ -103,13 +103,13 @@ public class FetchNextSearchPageTaskTest {
         createDbResult(1);
         RepoSearchResponse result = new RepoSearchResponse();
         result.setTotal(10);
-        List<Repo> repos = TestUtil.createRepos(10, "a", "b", "c");
+        List<Repo> repos = TestUtil.INSTANCE.createRepos(10, "a", "b", "c");
         result.setItems(repos);
         Call<RepoSearchResponse> call = createCall(result, null);
         when(service.searchRepos("foo", 1)).thenReturn(call);
         task.run();
         verify(repoDao).insertRepos(repos);
-        verify(observer).onChanged(Resource.success(false));
+        verify(observer).onChanged(Resource.Companion.success(false));
     }
 
     @Test
@@ -117,14 +117,14 @@ public class FetchNextSearchPageTaskTest {
         createDbResult(1);
         RepoSearchResponse result = new RepoSearchResponse();
         result.setTotal(10);
-        List<Repo> repos = TestUtil.createRepos(10, "a", "b", "c");
+        List<Repo> repos = TestUtil.INSTANCE.createRepos(10, "a", "b", "c");
         result.setItems(repos);
         result.setNextPage(2);
         Call<RepoSearchResponse> call = createCall(result, 2);
         when(service.searchRepos("foo", 1)).thenReturn(call);
         task.run();
         verify(repoDao).insertRepos(repos);
-        verify(observer).onChanged(Resource.success(true));
+        verify(observer).onChanged(Resource.Companion.success(true));
     }
 
     @Test
@@ -135,7 +135,7 @@ public class FetchNextSearchPageTaskTest {
                 MediaType.parse("txt"), "bar")));
         when(service.searchRepos("foo", 1)).thenReturn(call);
         task.run();
-        verify(observer).onChanged(Resource.error("bar", true));
+        verify(observer).onChanged(Resource.Companion.error("bar", true));
     }
 
     @Test
@@ -145,7 +145,7 @@ public class FetchNextSearchPageTaskTest {
         when(call.execute()).thenThrow(new IOException("bar"));
         when(service.searchRepos("foo", 1)).thenReturn(call);
         task.run();
-        verify(observer).onChanged(Resource.error("bar", true));
+        verify(observer).onChanged(Resource.Companion.error("bar", true));
     }
 
     private void createDbResult(Integer nextPage) {

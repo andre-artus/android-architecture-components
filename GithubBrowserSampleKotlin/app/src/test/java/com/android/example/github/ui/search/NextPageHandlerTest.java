@@ -77,11 +77,11 @@ public class NextPageHandlerTest {
         pageHandler.queryNextPage("foo");
         verify(repository).searchNextPage("foo");
         assertThat(liveData.hasActiveObservers(), is(true));
-        pageHandler.onChanged(Resource.loading(null));
+        pageHandler.onChanged(Resource.Companion.loading(null));
         assertThat(liveData.hasActiveObservers(), is(true));
         assertThat(getStatus().isRunning(), is(true));
 
-        pageHandler.onChanged(Resource.success(true));
+        pageHandler.onChanged(Resource.Companion.success(true));
         assertThat(liveData.hasActiveObservers(), is(false));
         assertThat(pageHandler.getHasMore(), is(true));
         assertThat(getStatus().isRunning(), is(false));
@@ -94,7 +94,7 @@ public class NextPageHandlerTest {
         verify(repository).searchNextPage("foo");
         assertThat(nextPage.hasActiveObservers(), is(true));
 
-        pageHandler.onChanged(Resource.success(false));
+        pageHandler.onChanged(Resource.Companion.success(false));
         assertThat(liveData.hasActiveObservers(), is(false));
         assertThat(pageHandler.getHasMore(), is(false));
         assertThat(getStatus().isRunning(), is(false));
@@ -119,7 +119,7 @@ public class NextPageHandlerTest {
         MutableLiveData<Resource<Boolean>> liveData = enqueueResponse("foo");
         pageHandler.queryNextPage("foo");
         assertThat(liveData.hasActiveObservers(), is(true));
-        pageHandler.onChanged(Resource.error("idk", false));
+        pageHandler.onChanged(Resource.Companion.error("idk", false));
         assertThat(liveData.hasActiveObservers(), is(false));
         assertThat(getStatus().getErrorMessage(), is("idk"));
         assertThat(getStatus().getErrorMessageIfNotHandled(), is("idk"));
@@ -132,7 +132,7 @@ public class NextPageHandlerTest {
         pageHandler.queryNextPage("foo");
         assertThat(liveData2.hasActiveObservers(), is(true));
         assertThat(getStatus().isRunning(), is(true));
-        pageHandler.onChanged(Resource.success(false));
+        pageHandler.onChanged(Resource.Companion.success(false));
         assertThat(getStatus().isRunning(), is(false));
         assertThat(getStatus().getErrorMessage(), is(nullValue()));
         assertThat(pageHandler.getHasMore(), is(false));
