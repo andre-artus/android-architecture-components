@@ -166,11 +166,8 @@ class RepoFragmentTest {
 
     private fun setContributors(vararg names: String) {
         val repo = TestUtil.createRepo("foo", "bar", "desc")
-        val contributors = ArrayList<Contributor>()
         var contributionCount = 100
-        for (name in names) {
-            contributors.add(TestUtil.createContributor(repo, name, contributionCount--))
-        }
+        val contributors = names.map { TestUtil.createContributor(repo, it, contributionCount--) }
 
         this.contributors.postValue(Resource.success(PagedListUtil.from(contributors)))
     }
