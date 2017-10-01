@@ -130,8 +130,8 @@ public class RepoRepositoryTest {
         Repo repo = TestUtil.INSTANCE.createRepo("foo", "bar", "desc");
         Contributor contributor = TestUtil.INSTANCE.createContributor(repo, "log", 3);
         // network does not send these
-        contributor.setRepoOwner(null);
-        contributor.setRepoName(null);
+        contributor.setRepoOwner("");
+        contributor.setRepoName("");
         List<Contributor> contributors = Collections.singletonList(contributor);
         LiveData<ApiResponse<List<Contributor>>> call = successCall(contributors);
         when(service.getContributors("foo", "bar"))
