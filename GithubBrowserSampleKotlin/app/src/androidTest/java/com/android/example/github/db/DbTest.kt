@@ -14,27 +14,26 @@
  * limitations under the License.
  */
 
-package com.android.example.github.db;
+package com.android.example.github.db
 
+import android.arch.persistence.room.Room
+import android.support.test.InstrumentationRegistry
 
-import android.arch.persistence.room.Room;
-import android.support.test.InstrumentationRegistry;
+import org.junit.After
+import org.junit.Before
 
-import org.junit.After;
-import org.junit.Before;
-
-abstract public class DbTest {
-    protected GithubDb db;
+abstract class DbTest {
+    protected lateinit var db: GithubDb
 
     @Before
-    public void initDb() {
+    fun initDb() {
         db = Room
-                .inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), GithubDb.class)
-                .build();
+                .inMemoryDatabaseBuilder(InstrumentationRegistry.getContext(), GithubDb::class.java)
+                .build()
     }
 
     @After
-    public void closeDb() {
-        db.close();
+    fun closeDb() {
+        db.close()
     }
 }
