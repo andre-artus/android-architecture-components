@@ -19,10 +19,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'jacoco'
+apply plugin: 'kotlin-allopen'
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.android.example.github"
         minSdkVersion 14
@@ -61,6 +62,10 @@ android {
     }
 }
 
+allOpen {
+    annotation("com.android.example.github.OpenClass")
+}
+
 jacoco {
     toolVersion = "0.7.4+"
 }
@@ -91,9 +96,7 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "android.arch.persistence.room:compiler:$arch_version"
     kapt "android.arch.lifecycle:compiler:$arch_version"
-    kapt "com.android.databinding:compiler:+"
-
-
+    kapt "com.android.databinding:compiler:$gradle_version"
 
     testImplementation "junit:junit:$junit_version"
     testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
@@ -122,21 +125,8 @@ dependencies {
     })
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
     androidTestImplementation "com.android.support.test:runner:$test_runner_version"
-}
 
-task createTestResources {
-    doLast {
-        println(System.env.MOCK_MAKER)
-        def mockMakerFile = new File("$projectDir/src/test/resources/mockito-extensions/org.mockito.plugins.MockMaker")
-        if (System.env.MOCK_MAKER != null) {
-            logger.info("Using MockMaker ${System.env.MOCK_MAKER}")
-            mockMakerFile.parentFile.mkdirs()
-            mockMakerFile.createNewFile()
-            mockMakerFile.write(System.env.MOCK_MAKER)
-        } else {
-            logger.info("Using default MockMaker")
-        }
-    }
+    androidTestImplementation "com.nhaarman:mockito-kotlin:1.5.0"
 }
 
 task fullCoverageReport(type: JacocoReport) {
