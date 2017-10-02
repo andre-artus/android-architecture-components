@@ -19,6 +19,7 @@ package com.android.example.github.binding
 import android.databinding.BindingAdapter
 import android.support.v4.app.Fragment
 import android.widget.ImageView
+import com.android.example.github.OpenClassOnDebug
 
 import com.bumptech.glide.Glide
 
@@ -27,6 +28,7 @@ import javax.inject.Inject
 /**
  * Binding adapters that work with a fragment instance.
  */
+@OpenClassOnDebug
 class FragmentBindingAdapters
 @Inject
 constructor(internal val fragment: Fragment) {

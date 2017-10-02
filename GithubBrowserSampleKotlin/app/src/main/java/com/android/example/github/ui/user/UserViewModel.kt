@@ -18,6 +18,7 @@ package com.android.example.github.ui.user
 
 import android.arch.lifecycle.*
 import android.support.annotation.VisibleForTesting
+import com.android.example.github.OpenClassOnDebug
 import com.android.example.github.repository.RepoRepository
 import com.android.example.github.repository.UserRepository
 import com.android.example.github.util.AbsentLiveData
@@ -27,7 +28,9 @@ import com.android.example.github.vo.Resource
 import com.android.example.github.vo.User
 import javax.inject.Inject
 
-class UserViewModel @Inject
+@OpenClassOnDebug
+class UserViewModel
+@Inject
 constructor(userRepository: UserRepository, repoRepository: RepoRepository) : ViewModel() {
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     val login = MutableLiveData<String>()

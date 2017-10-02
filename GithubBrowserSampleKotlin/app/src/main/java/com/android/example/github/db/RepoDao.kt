@@ -47,6 +47,7 @@ abstract class RepoDao {
     @Query("SELECT * FROM repo WHERE owner_login = :login AND name = :name")
     abstract fun load(login: String?, name: String?): LiveData<Repo>
 
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT login, avatarUrl, contributions FROM contributor "
                    + "WHERE repoName = :name AND repoOwner = :owner "
                    + "ORDER BY contributions DESC")

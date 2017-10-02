@@ -41,14 +41,14 @@ public class NextPageHandlerTest {
     @Rule
     public InstantTaskExecutorRule instantExecutorRule = new InstantTaskExecutorRule();
 
-    private SearchViewModel.NextPageHandler pageHandler;
+    private SearchViewModel.Companion.NextPageHandler pageHandler;
 
     private RepoRepository repository;
 
     @Before
     public void init() {
         repository = mock(RepoRepository.class);
-        pageHandler = new SearchViewModel.NextPageHandler(repository);
+        pageHandler = new SearchViewModel.Companion.NextPageHandler(repository);
     }
 
     @Test

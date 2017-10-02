@@ -18,10 +18,13 @@ package com.android.example.github.binding
 
 import android.databinding.DataBindingComponent
 import android.support.v4.app.Fragment
+import com.android.example.github.OpenClassOnDebug
 
 /**
  * A Data Binding Component implementation for fragments.
  */
+
+@OpenClassOnDebug
 class FragmentDataBindingComponent(fragment: Fragment) : DataBindingComponent {
     private val adapter: FragmentBindingAdapters = FragmentBindingAdapters(fragment)
 

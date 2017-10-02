@@ -19,6 +19,7 @@ package com.android.example.github.ui.search
 import android.arch.lifecycle.*
 import android.arch.lifecycle.Observer
 import android.support.annotation.VisibleForTesting
+import com.android.example.github.OpenClassOnDebug
 import com.android.example.github.repository.RepoRepository
 import com.android.example.github.util.AbsentLiveData
 import com.android.example.github.util.Objects
@@ -28,7 +29,9 @@ import com.android.example.github.vo.Status
 import java.util.*
 import javax.inject.Inject
 
-class SearchViewModel @Inject
+@OpenClassOnDebug
+class SearchViewModel
+@Inject
 internal constructor(repoRepository: RepoRepository) : ViewModel() {
 
     private val query = MutableLiveData<String>()
@@ -40,11 +43,11 @@ internal constructor(repoRepository: RepoRepository) : ViewModel() {
 
     init {
         nextPageHandler = NextPageHandler(repoRepository)
-        results = Transformations.switchMap(query) { search ->
-            if (search == null || search.trim { it <= ' ' }.isEmpty()) {
-                AbsentLiveData.create<Resource<List<Repo>>>()
+        results = Transformations.switchMap(query) {
+            if (it == null || it.trim { it <= ' ' }.isEmpty()) {
+                AbsentLiveData.create()
             } else {
-                repoRepository.search(search)
+                repoRepository.search(it)
             }
         }
     }
@@ -86,69 +89,71 @@ internal constructor(repoRepository: RepoRepository) : ViewModel() {
             }
     }
 
-    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-     class NextPageHandler
-    @VisibleForTesting
-    constructor(private val repository: RepoRepository) : Observer<Resource<Boolean>> {
-        private var nextPageLiveData: LiveData<Resource<Boolean>>? = null
-        val loadMoreState = MutableLiveData<LoadMoreState>()
-        private var query: String? = null
-        @VisibleForTesting
-        var hasMore: Boolean = false
+    companion object {
+        @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+        class NextPageHandler
+        @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+        constructor(private val repository: RepoRepository) : Observer<Resource<Boolean>> {
+            private var nextPageLiveData: LiveData<Resource<Boolean>>? = null
+            val loadMoreState = MutableLiveData<LoadMoreState>()
+            private var query: String? = null
+            @VisibleForTesting
+            var hasMore: Boolean = false
 
-        init {
-            reset()
-        }
-
-        fun queryNextPage(query: String) {
-            if (Objects.equals(this.query, query)) {
-                return
-            }
-            unregister()
-            this.query = query
-            nextPageLiveData = repository.searchNextPage(query)
-            loadMoreState.value = LoadMoreState(true, null)
-
-            nextPageLiveData!!.observeForever(this)
-        }
-
-        override fun onChanged(result: Resource<Boolean>?) {
-            if (result == null) {
+            init {
                 reset()
-            } else {
-                when (result.status) {
-                    Status.SUCCESS -> {
-                        hasMore = java.lang.Boolean.TRUE == result.data
-                        unregister()
-                        loadMoreState.setValue(LoadMoreState(false, null))
-                    }
-                    Status.ERROR -> {
-                        hasMore = true
-                        unregister()
-                        loadMoreState.setValue(LoadMoreState(false,
-                                                             result.message))
-                    }
-                    Status.LOADING -> {
+            }
 
+            fun queryNextPage(query: String) {
+                if (Objects.equals(this.query, query)) {
+                    return
+                }
+                unregister()
+                this.query = query
+                nextPageLiveData = repository.searchNextPage(query)
+                loadMoreState.value = LoadMoreState(true, null)
+
+                nextPageLiveData!!.observeForever(this)
+            }
+
+            override fun onChanged(result: Resource<Boolean>?) {
+                if (result == null) {
+                    reset()
+                } else {
+                    when (result.status) {
+                        Status.SUCCESS -> {
+                            hasMore = java.lang.Boolean.TRUE == result.data
+                            unregister()
+                            loadMoreState.setValue(LoadMoreState(false, null))
+                        }
+                        Status.ERROR -> {
+                            hasMore = true
+                            unregister()
+                            loadMoreState.setValue(LoadMoreState(false,
+                                                                 result.message))
+                        }
+                        Status.LOADING -> {
+
+                        }
                     }
                 }
             }
-        }
 
-        private fun unregister() {
-            if (nextPageLiveData != null) {
-                nextPageLiveData!!.removeObserver(this)
-                nextPageLiveData = null
-                if (hasMore) {
-                    query = null
+            private fun unregister() {
+                if (nextPageLiveData != null) {
+                    nextPageLiveData!!.removeObserver(this)
+                    nextPageLiveData = null
+                    if (hasMore) {
+                        query = null
+                    }
                 }
             }
-        }
 
-        fun reset() {
-            unregister()
-            hasMore = true
-            loadMoreState.value = LoadMoreState(false, null)
+            fun reset() {
+                unregister()
+                hasMore = true
+                loadMoreState.value = LoadMoreState(false, null)
+            }
         }
     }
 }

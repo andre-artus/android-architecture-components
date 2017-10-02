@@ -27,6 +27,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.android.example.github.OpenClassOnDebug
 import com.android.example.github.R
 import com.android.example.github.binding.FragmentDataBindingComponent
 import com.android.example.github.databinding.RepoFragmentBinding
@@ -41,6 +42,7 @@ import javax.inject.Inject
 /**
  * The UI Controller for displaying a Github Repo's information with its contributors.
  */
+@OpenClassOnDebug
 class RepoFragment : Fragment(), Injectable {
 
     @Inject

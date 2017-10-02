@@ -23,21 +23,18 @@ import com.android.example.github.ui.search.SearchFragment
 import com.android.example.github.ui.user.UserFragment
 
 import android.support.v4.app.FragmentManager
+import com.android.example.github.OpenClassOnDebug
 
 import javax.inject.Inject
 
 /**
  * A utility class that handles navigation in [MainActivity].
  */
+@OpenClassOnDebug
 class NavigationController @Inject
 constructor(mainActivity: MainActivity) {
-    private val containerId: Int
-    private val fragmentManager: FragmentManager
-
-    init {
-        this.containerId = R.id.container
-        this.fragmentManager = mainActivity.supportFragmentManager
-    }
+    private val containerId = R.id.container
+    private val fragmentManager = mainActivity.supportFragmentManager
 
     fun navigateToSearch() {
         val searchFragment = SearchFragment()

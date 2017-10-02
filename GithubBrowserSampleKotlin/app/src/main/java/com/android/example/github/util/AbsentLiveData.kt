@@ -27,9 +27,7 @@ class AbsentLiveData private constructor() : LiveData<Nothing>() {
     }
 
     companion object {
-        fun <T> create(): LiveData<T> {
-
-            return AbsentLiveData() as LiveData<T>
-        }
+        @Suppress("UNCHECKED_CAST")
+        fun <T> create(): LiveData<T> = AbsentLiveData() as LiveData<T>
     }
 }

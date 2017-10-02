@@ -16,7 +16,6 @@
 
 package com.android.example.github.ui.repo
 
-import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.PagedList
 import android.support.annotation.StringRes
@@ -29,6 +28,7 @@ import android.support.test.espresso.matcher.ViewMatchers.*
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import android.view.View
+import com.android.example.github.OpenClassOnDebug
 import com.android.example.github.R
 import com.android.example.github.binding.FragmentBindingAdapters
 import com.android.example.github.binding.FragmentDataBindingComponent
@@ -38,20 +38,21 @@ import com.android.example.github.util.*
 import com.android.example.github.vo.Contributor
 import com.android.example.github.vo.Repo
 import com.android.example.github.vo.Resource
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import org.hamcrest.CoreMatchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.*
-import java.util.*
+import org.mockito.Mockito.verify
 
+@OpenClassOnDebug
 @RunWith(AndroidJUnit4::class)
 class RepoFragmentTest {
-    @Rule
+    @get:Rule
     var activityRule = ActivityTestRule(SingleFragmentActivity::class.java, true, true)
-    @Rule
-    var executorRule = TaskExecutorWithIdlingResourceRule()
+
     private val repo = MutableLiveData<Resource<Repo>>()
     private val contributors = MutableLiveData<Resource<PagedList<Contributor>>>()
     private lateinit var repoFragment: RepoFragment
@@ -62,20 +63,21 @@ class RepoFragmentTest {
 
     @Before
     fun init() {
+        fragmentBindingAdapters = mock()
+        val fragmentDataBindingComponent: FragmentDataBindingComponent = mock()
+        whenever(fragmentDataBindingComponent.fragmentBindingAdapters).thenReturn(fragmentBindingAdapters)
+
+        viewModel = mock()
+        whenever(viewModel.repo).thenReturn(repo)
+        whenever(viewModel.contributors).thenReturn(contributors)
+
+        navigationController = mock()
+
         repoFragment = RepoFragment.create("a", "b")
-
-        viewModel = mock(RepoViewModel::class.java)
-        `when`<LiveData<Resource<Repo>>>(viewModel.repo).thenReturn(repo)
-        `when`<LiveData<Resource<PagedList<Contributor>>>>(viewModel.contributors).thenReturn(contributors)
         repoFragment.viewModelFactory = ViewModelUtil.createFor<RepoViewModel>(viewModel)
-
-        fragmentBindingAdapters = mock(FragmentBindingAdapters::class.java)
-        val fragmentDataBindingComponent = mock(FragmentDataBindingComponent::class.java)
-        `when`(fragmentDataBindingComponent.fragmentBindingAdapters).thenReturn(fragmentBindingAdapters)
         repoFragment.dataBindingComponent = fragmentDataBindingComponent
-
-        navigationController = mock(NavigationController::class.java)
         repoFragment.navigationController = navigationController
+
 
         activityRule.activity.setFragment(repoFragment)
     }

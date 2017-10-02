@@ -96,22 +96,22 @@ constructor(private val appExecutors: AppExecutors,
 
     fun loadContributors(owner: String, name: String): LiveData<Resource<PagedList<Contributor>>> {
         return object : NetworkBoundResource<PagedList<Contributor>, List<Contributor>>(appExecutors) {
-            override fun saveCallResult(contributors: List<Contributor>) {
-                for (contributor in contributors) {
+            override fun saveCallResult(item: List<Contributor>) {
+                for (contributor in item) {
                     contributor.repoName = name
                     contributor.repoOwner = owner
                 }
                 db.beginTransaction()
                 try {
                     repoDao.createRepoIfNotExists(Repo(Repo.UNKNOWN_ID,
-                                                       name, owner + "/" + name, "",
+                                                       name, "$owner/$name", "",
                                                        Repo.Owner(owner, null), 0))
-                    repoDao.insertContributors(contributors)
+                    repoDao.insertContributors(item)
                     db.setTransactionSuccessful()
                 } finally {
                     db.endTransaction()
                 }
-                Timber.d("rece saved contributors to db")
+                Timber.d("rece saved item to db")
             }
 
             override fun shouldFetch(data: PagedList<Contributor>?): Boolean {
@@ -131,7 +131,8 @@ constructor(private val appExecutors: AppExecutors,
     }
 
     fun searchNextPage(query: String): LiveData<Resource<Boolean>> {
-        val fetchNextSearchPageTask = FetchNextSearchPageTask(query, githubService, db)
+        val fetchNextSearchPageTask = FetchNextSearchPageTask(
+                query, githubService, db)
         appExecutors.networkIO().execute(fetchNextSearchPageTask)
         return fetchNextSearchPageTask.liveData
     }

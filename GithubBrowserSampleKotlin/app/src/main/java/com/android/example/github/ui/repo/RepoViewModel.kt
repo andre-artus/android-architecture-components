@@ -19,6 +19,7 @@ package com.android.example.github.ui.repo
 import android.arch.lifecycle.*
 import android.arch.paging.PagedList
 import android.support.annotation.VisibleForTesting
+import com.android.example.github.OpenClassOnDebug
 import com.android.example.github.repository.RepoRepository
 import com.android.example.github.util.AbsentLiveData
 import com.android.example.github.util.Objects
@@ -27,14 +28,16 @@ import com.android.example.github.vo.Repo
 import com.android.example.github.vo.Resource
 import javax.inject.Inject
 
+@OpenClassOnDebug
 class RepoViewModel
 @Inject
 constructor(repository: RepoRepository) : ViewModel() {
+    private val _repoId: MutableLiveData<RepoId> = MutableLiveData()
     @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-    val repoId: MutableLiveData<RepoId> = MutableLiveData()
-    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+    val repoId: MutableLiveData<RepoId>
+        get() = _repoId
+
     val repo: LiveData<Resource<Repo>>
-    @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
     val contributors: LiveData<Resource<PagedList<Contributor>>>
 
     init {
