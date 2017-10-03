@@ -170,8 +170,8 @@ constructor(private val appExecutors: AppExecutors,
                 return githubService.searchRepos(query)
             }
 
-            override fun processResponse(response: ApiResponse<RepoSearchResponse>): RepoSearchResponse? {
-                val body = response.body
+            override fun processResponse(response: ApiResponse<RepoSearchResponse>?): RepoSearchResponse? {
+                val body = response?.body
                 if (body != null) {
                     body.nextPage = response.nextPage
                 }

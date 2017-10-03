@@ -60,9 +60,12 @@ internal constructor(private val appExecutors: AppExecutors) {
             result.removeSource(apiResponse)
             result.removeSource(dbSource)
 
-            if (response!!.isSuccessful) {
-                appExecutors.diskIO().execute {
-                    saveCallResult(processResponse(response)!!)
+            if (response != null) when {
+                response.isSuccessful -> appExecutors.diskIO().execute {
+                    val item = processResponse(response)
+                    if (item != null) {
+                        saveCallResult(item)
+                    }
                     appExecutors.mainThread().execute {
                         // we specially request a new live data,
                         // otherwise we will get immediately last cached value,
@@ -72,10 +75,11 @@ internal constructor(private val appExecutors: AppExecutors) {
                         }
                     }
                 }
-            } else {
-                onFetchFailed()
-                result.addSource(dbSource) {
-                    result.setValue(Resource.error(response.errorMessage, it))
+                else -> {
+                    onFetchFailed()
+                    result.addSource(dbSource) {
+                        result.setValue(Resource.error(response.errorMessage, it))
+                    }
                 }
             }
         }
@@ -83,13 +87,11 @@ internal constructor(private val appExecutors: AppExecutors) {
 
     protected open fun onFetchFailed() {}
 
-    fun asLiveData(): LiveData<Resource<ResultType>> {
-        return result
-    }
+    fun asLiveData() = result
 
     @WorkerThread
-    protected open fun processResponse(response: ApiResponse<RequestType>): RequestType? {
-        return response.body
+    protected open fun processResponse(response: ApiResponse<RequestType>?): RequestType? {
+        return response?.body
     }
 
     @WorkerThread
