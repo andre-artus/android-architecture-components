@@ -120,11 +120,11 @@ class UserViewModelTest {
         verifyNoMoreInteractions(repoRepository, userRepository)
         userViewModel.retry()
         verifyNoMoreInteractions(repoRepository, userRepository)
-        val userObserver = mock<Observer<Resource<User>>>()
+        val userObserver: Observer<Resource<User>> = mock()
 
         userViewModel.user.observeForever(userObserver)
 
-        val repoObserver = mock<Observer<Resource<List<Repo>>>>()
+        val repoObserver: Observer<Resource<List<Repo>>> = mock()
         userViewModel.repositories.observeForever(repoObserver)
 
         verify(userRepository).loadUser("foo")
@@ -145,7 +145,7 @@ class UserViewModelTest {
 
     @Test
     fun nullUser() {
-        val observer = mock<Observer<Resource<User>>>()
+        val observer: Observer<Resource<User>> = mock()
         userViewModel.setLogin("foo")
         userViewModel.setLogin(null)
         userViewModel.user.observeForever(observer)
@@ -154,7 +154,7 @@ class UserViewModelTest {
 
     @Test
     fun nullRepoList() {
-        val observer = mock<Observer<Resource<List<Repo>>>>()
+        val observer: Observer<Resource<List<Repo>>> = mock()
         userViewModel.setLogin("foo")
         userViewModel.setLogin(null)
         userViewModel.repositories.observeForever(observer)
@@ -163,7 +163,7 @@ class UserViewModelTest {
 
     @Test
     fun dontRefreshOnSameData() {
-        val observer = mock<Observer<String>>()
+        val observer: Observer<String> = mock()
         userViewModel.login.observeForever(observer)
         verifyNoMoreInteractions(observer)
         userViewModel.setLogin("foo")

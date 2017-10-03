@@ -117,7 +117,7 @@ class NetworkBoundResourceTest(private val useRealExecutors: Boolean) {
         val networkResult = Foo(1)
         createCall = { createCall(Response.success(networkResult)) }
 
-        val observer = mock<Observer<Resource<Foo>>>()
+        val observer: Observer<Resource<Foo>> = mock()
 
         networkBoundResource.asLiveData().observeForever(observer)
         drain()
@@ -139,7 +139,7 @@ class NetworkBoundResourceTest(private val useRealExecutors: Boolean) {
         val body = ResponseBody.create(MediaType.parse("text/html"), "error")
         createCall = { createCall(Response.error<Foo>(500, body)) }
 
-        val observer = mock<Observer<Resource<Foo>>>()
+        val observer: Observer<Resource<Foo>> = mock()
         networkBoundResource.asLiveData().observeForever(observer)
         drain()
         verify(observer).onChanged(Resource.loading<Foo>(null))
@@ -159,7 +159,7 @@ class NetworkBoundResourceTest(private val useRealExecutors: Boolean) {
             saved.set(true)
         }
 
-        val observer = mock<Observer<Resource<Foo>>>()
+        val observer: Observer<Resource<Foo>> = mock()
         networkBoundResource.asLiveData().observeForever(observer)
         drain()
         verify(observer).onChanged(Resource.loading<Foo>(null))
@@ -189,7 +189,7 @@ class NetworkBoundResourceTest(private val useRealExecutors: Boolean) {
 
         createCall = { apiResponseLiveData }
 
-        val observer = mock<Observer<Resource<Foo>>>()
+        val observer: Observer<Resource<Foo>> = mock()
         networkBoundResource.asLiveData().observeForever(observer)
         drain()
         verify(observer).onChanged(Resource.loading<Foo>(null))
@@ -226,7 +226,7 @@ class NetworkBoundResourceTest(private val useRealExecutors: Boolean) {
         val apiResponseLiveData = MutableLiveData<ApiResponse<Foo>>()
         createCall = { apiResponseLiveData }
 
-        val observer = mock<Observer<Resource<Foo>>>()
+        val observer: Observer<Resource<Foo>> = mock()
         networkBoundResource.asLiveData().observeForever(observer)
         drain()
         verify(observer).onChanged(Resource.loading<Foo>(null))

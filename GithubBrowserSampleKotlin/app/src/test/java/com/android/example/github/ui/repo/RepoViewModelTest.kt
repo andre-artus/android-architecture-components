@@ -97,7 +97,7 @@ class RepoViewModelTest {
 
     @Test
     fun contributors() {
-        val observer = mock<Observer<Resource<PagedList<Contributor>>>>()
+        val observer: Observer<Resource<PagedList<Contributor>>> = mock()
 
         repoViewModel.contributors.observeForever(observer)
         verifyNoMoreInteractions(observer)
@@ -108,7 +108,7 @@ class RepoViewModelTest {
 
     @Test
     fun resetId() {
-        val observer = mock<Observer<RepoViewModel.RepoId>>()
+        val observer: Observer<RepoViewModel.RepoId> = mock()
 
         repoViewModel.repoId.observeForever(observer)
         verifyNoMoreInteractions(observer)
@@ -128,7 +128,7 @@ class RepoViewModelTest {
         repoViewModel.setId("foo", "bar")
         verifyNoMoreInteractions(repository)
 
-        val observer = mock<Observer<Resource<Repo>>>()
+        val observer: Observer<Resource<Repo>> = mock()
         repoViewModel.repo.observeForever(observer)
 
         verify<RepoRepository>(repository).loadRepo("foo", "bar")
@@ -141,8 +141,8 @@ class RepoViewModelTest {
     @Test
     fun nullRepoId() {
         repoViewModel.setId(null, null)
-        val observer1 = mock<Observer<Resource<Repo>>>()
-        val observer2 = mock<Observer<Resource<PagedList<Contributor>>>>()
+        val observer1: Observer<Resource<Repo>> = mock()
+        val observer2: Observer<Resource<PagedList<Contributor>>> = mock()
         repoViewModel.repo.observeForever(observer1)
         repoViewModel.contributors.observeForever(observer2)
 

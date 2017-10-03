@@ -123,7 +123,7 @@ class FetchNextSearchPageTaskTest {
     @Throws(IOException::class)
     fun nextPageApiError() {
         createDbResult(1)
-        val call = mock<Call<RepoSearchResponse>>()
+        val call: Call<RepoSearchResponse> = mock()
         whenever(call.execute()).thenReturn(Response.error(400, ResponseBody.create(MediaType.parse("txt"), "bar")))
         whenever(service.searchRepos("foo", 1)).thenReturn(call)
         task.run()
@@ -160,7 +160,7 @@ class FetchNextSearchPageTaskTest {
             Response.success(body)
         else
             Response.success(body, headers)
-        val call = mock<Call<RepoSearchResponse>>()
+        val call: Call<RepoSearchResponse> = mock()
         whenever(call.execute()).thenReturn(success)
 
         return call

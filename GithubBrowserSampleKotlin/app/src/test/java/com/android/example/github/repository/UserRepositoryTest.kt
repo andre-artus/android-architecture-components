@@ -39,7 +39,8 @@ class UserRepositoryTest {
     private lateinit var githubService: GithubService
     private lateinit var repo: UserRepository
 
-    @Rule
+    @Suppress("unused")
+    @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @Before

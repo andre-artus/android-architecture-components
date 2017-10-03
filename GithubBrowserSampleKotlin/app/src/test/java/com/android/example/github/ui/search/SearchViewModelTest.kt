@@ -48,7 +48,7 @@ class SearchViewModelTest {
 
     @Test
     fun empty() {
-        val result = mock<Observer<Resource<List<Repo>>>>()
+        val result: Observer<Resource<List<Repo>>> = mock()
         viewModel.results.observeForever(result)
         viewModel.loadNextPage()
         verifyNoMoreInteractions(repository)
@@ -56,7 +56,7 @@ class SearchViewModelTest {
 
     @Test
     fun basic() {
-        val result = mock<Observer<Resource<List<Repo>>>>()
+        val result: Observer<Resource<List<Repo>>> = mock()
         viewModel.results.observeForever(result)
         viewModel.setQuery("foo")
         verify<RepoRepository>(repository).search("foo")
@@ -79,7 +79,7 @@ class SearchViewModelTest {
         val nextPage = MutableLiveData<Resource<Boolean>>()
         whenever(repository.searchNextPage("foo")).thenReturn(nextPage)
 
-        val result = mock<Observer<Resource<List<Repo>>>>()
+        val result: Observer<Resource<List<Repo>>> = mock()
         viewModel.results.observeForever(result)
         verifyNoMoreInteractions(repository)
         viewModel.setQuery("foo")

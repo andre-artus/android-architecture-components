@@ -36,7 +36,7 @@ class AutoClearedValueTest {
     @get:Rule
     var activityRule = ActivityTestRule(SingleFragmentActivity::class.java, true, true)
 
-    private var testFragment: TestFragment? = null
+    private lateinit var testFragment: TestFragment
 
     @Before
     fun init() {
@@ -48,31 +48,31 @@ class AutoClearedValueTest {
     @Test
     @Throws(Throwable::class)
     fun clearOnReplace() {
-        testFragment!!.testValue = AutoClearedValue(testFragment!!, "foo")
+        testFragment.testValue = AutoClearedValue(testFragment, "foo")
         activityRule.activity.replaceFragment(TestFragment())
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-        assertThat<String>(testFragment!!.testValue!!.get(), nullValue())
+        assertThat<String>(testFragment.testValue!!.get(), nullValue())
     }
 
     @Test
     @Throws(Throwable::class)
     fun dontClearForChildFragment() {
-        testFragment!!.testValue = AutoClearedValue(testFragment!!, "foo")
-        testFragment!!.childFragmentManager.beginTransaction()
+        testFragment.testValue = AutoClearedValue(testFragment, "foo")
+        testFragment.childFragmentManager.beginTransaction()
                 .add(Fragment(), "foo").commit()
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-        assertThat<String>(testFragment!!.testValue!!.get(), `is`("foo"))
+        assertThat<String>(testFragment.testValue!!.get(), `is`("foo"))
     }
 
     @Test
     @Throws(Throwable::class)
     fun dontClearForDialog() {
-        testFragment!!.testValue = AutoClearedValue(testFragment!!, "foo")
+        testFragment.testValue = AutoClearedValue(testFragment, "foo")
         val dialogFragment = DialogFragment()
-        dialogFragment.show(testFragment!!.fragmentManager, "dialog")
+        dialogFragment.show(testFragment.fragmentManager, "dialog")
         dialogFragment.dismiss()
         InstrumentationRegistry.getInstrumentation().waitForIdleSync()
-        assertThat<String>(testFragment!!.testValue!!.get(), `is`("foo"))
+        assertThat<String>(testFragment.testValue!!.get(), `is`("foo"))
     }
 
     class TestFragment : Fragment() {
