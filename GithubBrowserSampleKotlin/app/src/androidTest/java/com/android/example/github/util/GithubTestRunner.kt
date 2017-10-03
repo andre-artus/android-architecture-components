@@ -14,16 +14,20 @@
  * limitations under the License.
  */
 
-package com.android.example.github.util;
+package com.android.example.github.util
 
-import com.android.example.github.AppExecutors;
+import android.app.Application
+import android.content.Context
+import android.support.test.runner.AndroidJUnitRunner
 
-import java.util.concurrent.Executor;
+import com.android.example.github.TestApp
 
-public class InstantAppExecutors extends AppExecutors {
-    private static Executor instant = command -> command.run();
-
-    public InstantAppExecutors() {
-        super(instant, instant, instant);
+/**
+ * Custom runner to disable dependency injection.
+ */
+class GithubTestRunner : AndroidJUnitRunner() {
+    @Throws(InstantiationException::class, IllegalAccessException::class, ClassNotFoundException::class)
+    override fun newApplication(cl: ClassLoader, className: String, context: Context): Application {
+        return super.newApplication(cl, TestApp::class.java.name, context)
     }
 }

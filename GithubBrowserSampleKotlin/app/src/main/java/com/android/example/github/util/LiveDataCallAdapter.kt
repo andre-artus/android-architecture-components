@@ -16,17 +16,11 @@
 
 package com.android.example.github.util
 
-import com.android.example.github.api.ApiResponse
-
 import android.arch.lifecycle.LiveData
-
+import com.android.example.github.api.ApiResponse
+import retrofit2.*
 import java.lang.reflect.Type
 import java.util.concurrent.atomic.AtomicBoolean
-
-import retrofit2.Call
-import retrofit2.CallAdapter
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * A Retrofit adapterthat converts the Call into a LiveData of ApiResponse.

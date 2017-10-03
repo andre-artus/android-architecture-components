@@ -16,15 +16,13 @@
 
 package com.android.example.github.di
 
-import com.android.example.github.GithubApp
-
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.app.FragmentManager
-
+import com.android.example.github.GithubApp
 import dagger.android.AndroidInjection
 import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector

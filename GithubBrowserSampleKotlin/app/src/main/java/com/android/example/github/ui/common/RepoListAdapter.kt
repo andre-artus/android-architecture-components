@@ -16,16 +16,14 @@
 
 package com.android.example.github.ui.common
 
-import com.android.example.github.R
-import com.android.example.github.databinding.RepoItemBinding
-import com.android.example.github.util.Objects
-import com.android.example.github.vo.Repo
-
 import android.databinding.DataBindingComponent
 import android.databinding.DataBindingUtil
 import android.support.v7.recyclerview.extensions.DiffCallback
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.android.example.github.R
+import com.android.example.github.databinding.RepoItemBinding
+import com.android.example.github.vo.Repo
 
 /**
  * A RecyclerView adapter for [Repo] class.
@@ -34,7 +32,7 @@ class RepoListAdapter(private val dataBindingComponent: DataBindingComponent,
                       private val showFullName: Boolean,
                       private val repoClickCallback: RepoClickCallback) : DataBoundListAdapter<Repo, RepoItemBinding>(object : DiffCallback<Repo>() {
     override fun areItemsTheSame(oldItem: Repo, newItem: Repo): Boolean {
-        return oldItem.owner == newItem.owner && oldItem.name ==  newItem.name
+        return oldItem.owner == newItem.owner && oldItem.name == newItem.name
     }
 
     override fun areContentsTheSame(oldItem: Repo, newItem: Repo): Boolean {

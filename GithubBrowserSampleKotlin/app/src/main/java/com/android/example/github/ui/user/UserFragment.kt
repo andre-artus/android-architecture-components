@@ -72,7 +72,7 @@ class UserFragment : Fragment(), Injectable {
             // this is only necessary because espresso cannot read data binding callbacks.
             binding.get()!!.executePendingBindings()
         })
-        val rvAdapter = RepoListAdapter(dataBindingComponent, false, object: RepoListAdapter.RepoClickCallback {
+        val rvAdapter = RepoListAdapter(dataBindingComponent, false, object : RepoListAdapter.RepoClickCallback {
             override fun onClick(repo: Repo) {
                 navigationController.navigateToRepo(repo.owner.login, repo.name)
             }

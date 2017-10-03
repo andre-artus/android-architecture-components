@@ -16,12 +16,10 @@
 
 package com.android.example.github.api
 
+import android.arch.lifecycle.LiveData
 import com.android.example.github.vo.Contributor
 import com.android.example.github.vo.Repo
 import com.android.example.github.vo.User
-
-import android.arch.lifecycle.LiveData
-
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

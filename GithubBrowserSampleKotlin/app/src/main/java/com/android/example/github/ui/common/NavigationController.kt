@@ -17,14 +17,11 @@
 package com.android.example.github.ui.common
 
 import com.android.example.github.MainActivity
+import com.android.example.github.OpenClassOnDebug
 import com.android.example.github.R
 import com.android.example.github.ui.repo.RepoFragment
 import com.android.example.github.ui.search.SearchFragment
 import com.android.example.github.ui.user.UserFragment
-
-import android.support.v4.app.FragmentManager
-import com.android.example.github.OpenClassOnDebug
-
 import javax.inject.Inject
 
 /**

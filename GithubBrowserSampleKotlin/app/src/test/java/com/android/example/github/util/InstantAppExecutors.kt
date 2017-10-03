@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-package com.android.example.github;
+package com.android.example.github.util
 
-import android.app.Application;
+import com.android.example.github.AppExecutors
 
-/**
- * We use a separate App for tests to prevent initializing dependency injection.
- *
- * See {@link com.android.example.github.util.GithubTestRunner}.
- */
-public class TestApp extends Application {
-    @Override
-    public void onCreate() {
-        super.onCreate();
+import java.util.concurrent.Executor
+
+class InstantAppExecutors : AppExecutors(instant, instant, instant) {
+    companion object {
+        private val instant = Executor { command -> command.run() }
     }
 }

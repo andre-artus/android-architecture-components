@@ -14,25 +14,24 @@
  * limitations under the License.
  */
 
-package com.android.example.github.util;
+package com.android.example.github.util
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 
 /**
  * Creates a one off view model factory for the given view model instance.
  */
-public class ViewModelUtil {
-    private ViewModelUtil() {}
-    public static <T extends ViewModel> ViewModelProvider.Factory createFor(T model) {
-        return new ViewModelProvider.Factory() {
-            @Override
-            public <T extends ViewModel> T create(Class<T> modelClass) {
-                if (modelClass.isAssignableFrom(model.getClass())) {
-                    return (T) model;
+object ViewModelUtil {
+    fun <T : ViewModel> createFor(model: T): ViewModelProvider.Factory {
+        return object : ViewModelProvider.Factory {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(model.javaClass)) {
+                    return model as T
                 }
-                throw new IllegalArgumentException("unexpected model class " + modelClass);
+                throw IllegalArgumentException("unexpected model class " + modelClass)
             }
-        };
+        }
     }
 }
