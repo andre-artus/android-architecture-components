@@ -32,6 +32,7 @@ class CountingAppExecutors {
             synchronized(LOCK) {
                 taskCount--
                 if (taskCount == 0) {
+                    @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
                     (LOCK as java.lang.Object).notifyAll()
                 }
             }
@@ -58,6 +59,7 @@ class CountingAppExecutors {
                 val now = System.currentTimeMillis()
                 val remaining = end - now
                 if (remaining > 0) {
+                    @Suppress("PLATFORM_CLASS_MAPPED_TO_KOTLIN")
                     (LOCK as java.lang.Object).wait(remaining)
                 } else {
                     throw TimeoutException("could not drain tasks")
