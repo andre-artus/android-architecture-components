@@ -22,15 +22,15 @@
 
         <variable
             name="user"
-            type="com.android.example.github_kotlin.vo.User" />
+            type="com.android.example.githubkotlin.vo.User" />
 
         <variable
             name="userResource"
-            type="com.android.example.github_kotlin.vo.Resource" />
+            type="com.android.example.githubkotlin.vo.Resource" />
 
         <variable
             name="retryCallback"
-            type="com.android.example.github_kotlin.ui.common.RetryCallback" />
+            type="com.android.example.githubkotlin.ui.common.RetryCallback" />
     </data>
 
     <android.support.constraint.ConstraintLayout
