@@ -45,7 +45,7 @@ dependencies {
     implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
     implementation "com.android.support:design:$rootProject.supportLibraryVersion"
     // Architecture components
-    implementation "android.arch.lifecycle:runtime:$rootProject.architectureComponentsVersion"
+    implementation "android.arch.lifecycle:runtime:$lifecycleVersion"
     implementation "android.arch.lifecycle:extensions:$rootProject.architectureComponentsVersion"
     kapt "android.arch.lifecycle:compiler:$rootProject.architectureComponentsVersion"
     implementation "android.arch.persistence.room:runtime:$rootProject.architectureComponentsVersion"
