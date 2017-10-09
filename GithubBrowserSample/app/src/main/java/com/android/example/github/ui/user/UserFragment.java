@@ -47,6 +47,7 @@ public class UserFragment extends Fragment implements Injectable {
 
     DataBindingComponent dataBindingComponent = new FragmentDataBindingComponent(this);
     private UserViewModel userViewModel;
+    @VisibleForTesting
     AutoClearedValue<UserFragmentBinding> binding;
     private AutoClearedValue<RepoListAdapter> adapter;
 
