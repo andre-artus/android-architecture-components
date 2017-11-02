@@ -16,6 +16,7 @@
 
 package com.android.example.githubkotlin.ui.common
 
+import android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_CLOSE
 import com.android.example.githubkotlin.MainActivity
 import com.android.example.githubkotlin.OpenClassOnDebug
 import com.android.example.githubkotlin.R
@@ -36,6 +37,7 @@ constructor(mainActivity: MainActivity) {
     fun navigateToSearch() {
         val searchFragment = SearchFragment()
         fragmentManager.beginTransaction()
+                .setTransition(TRANSIT_FRAGMENT_CLOSE)
                 .replace(containerId, searchFragment)
                 .commitAllowingStateLoss()
     }
@@ -44,6 +46,7 @@ constructor(mainActivity: MainActivity) {
         val fragment = RepoFragment.create(owner, name)
         val tag = "repo/$owner/$name"
         fragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right)
                 .replace(containerId, fragment, tag)
                 .addToBackStack(null)
                 .commitAllowingStateLoss()
@@ -53,6 +56,7 @@ constructor(mainActivity: MainActivity) {
         val tag = "user" + "/" + login
         val userFragment = UserFragment.create(login)
         fragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
                 .replace(containerId, userFragment, tag)
                 .addToBackStack(null)
                 .commitAllowingStateLoss()

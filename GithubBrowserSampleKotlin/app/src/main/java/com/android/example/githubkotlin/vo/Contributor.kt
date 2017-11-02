@@ -26,13 +26,16 @@ import com.google.gson.annotations.SerializedName
                                          childColumns = arrayOf("repoName", "repoOwner"),
                                          onUpdate = ForeignKey.CASCADE,
                                          deferred = true)))
-data class Contributor(
-        @field:SerializedName("login")
-        val login: String,
-        @field:SerializedName("contributions")
-        val contributions: Int,
-        @field:SerializedName("avatar_url")
-        val avatarUrl: String?,
-        var repoName: String = "",
-        var repoOwner: String = "") {
+class Contributor(
+        login: String,
+        contributions: Int,
+        avatarUrl: String?) {
+    @field:SerializedName("login")
+    val login = login
+    @field:SerializedName("contributions")
+    val contributions = contributions
+    @field:SerializedName("avatar_url")
+    val avatarUrl = avatarUrl
+    var repoName = ""
+    var repoOwner = ""
 }

@@ -48,7 +48,7 @@ abstract class RepoDao {
     abstract fun load(login: String?, name: String?): LiveData<Repo>
 
     @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
-    @Query("SELECT login, avatarUrl, contributions FROM contributor "
+    @Query("SELECT c.* FROM contributor c "
                    + "WHERE repoName = :name AND repoOwner = :owner "
                    + "ORDER BY contributions DESC")
     abstract fun loadContributors(owner: String, name: String): LivePagedListProvider<Int, Contributor>

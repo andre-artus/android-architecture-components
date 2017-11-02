@@ -46,15 +46,19 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="@dimen/default_margin"/>
+
             <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" android:text="@{contributor.login}"
-                    tools:text="Yigit Boyar"
-                    app:layout_constraintStart_toEndOf="@+id/imageView"
-                    android:layout_marginStart="@dimen/default_margin"
-                    app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"
-                    android:layout_marginLeft="@dimen/default_margin"/>
+                android:id="@+id/textView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="@dimen/default_margin"
+                android:layout_marginTop="8dp"
+                android:text="@{contributor.login}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imageView"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="jkhjkd hjkdsh jkdjk hdjkshjk hsdjkh jkdh jkdshjk hsdjkh jksdh jksdfh jkhdsjkh dsjkh jksdh jksdhjk hdjkh sjkh dfjkshjksdhfjk hsdjkh jsdhf jkhsdjk hsdjkh jksdhjkf hsdjkh jksdh jksdh hjh jkh jkhjkh jkhjkhjkh jkhjkhjkhjkhjkhjkd hjkdsh jkdjk hdjkshjk hsdjkh jkdh jkdshjk hsdjkh jksdh jksdfh jkhdsjkh dsjkh jksdh jksdhjk hdjkh sjkh dfjkshjksdhfjk hsdjkh jsdhf jkhsdjk hsdjkh jksdhjkf hsdjkh jksdh jksdh hjh jkh jkhjkh jkhjkhjkh jkhjkhjkhjkhjkhjkd hjkdsh jkdjk hdjkshjk hsdjkh jkdh jkdshjk hsdjkh jksdh jksdfh jkhdsjkh dsjkh jksdh jksdhjk hdjkh sjkh dfjkshjksdhfjk hsdjkh jsdhf jkhsdjk hsdjkh jksdhjkf hsdjkh jksdh jksdh hjh jkh jkhjkh jkhjkhjkh jkhjkhjkhjkh" />
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </layout>
