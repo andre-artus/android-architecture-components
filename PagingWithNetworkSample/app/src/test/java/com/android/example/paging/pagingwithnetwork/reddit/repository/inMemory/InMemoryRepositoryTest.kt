@@ -78,7 +78,7 @@ class InMemoryRepositoryTest(type : RedditPostRepository.Type) {
     fun oneItem() {
         val post = postFactory.createRedditPost("foo")
         fakeApi.addPost(post)
-        val listing = repository.postsOfSubreddit(subReddit = "foo", pageSize = 10)
+        val listing = repository.postsOfSubreddit(subredditName = "foo", pageSize = 10)
         assertThat(getPagedList(listing), `is`(listOf(post)))
     }
 
@@ -89,7 +89,7 @@ class InMemoryRepositoryTest(type : RedditPostRepository.Type) {
     fun verifyCompleteList() {
         val posts = (0..10).map { postFactory.createRedditPost("bar") }
         posts.forEach(fakeApi::addPost)
-        val listing = repository.postsOfSubreddit(subReddit = "bar", pageSize = 3)
+        val listing = repository.postsOfSubreddit(subredditName = "bar", pageSize = 3)
         // trigger loading of the whole list
         val pagedList = getPagedList(listing)
         pagedList.loadAround(posts.size - 1)
@@ -102,7 +102,7 @@ class InMemoryRepositoryTest(type : RedditPostRepository.Type) {
     @Test
     fun failToLoadInitial() {
         fakeApi.failureMsg = "xxx"
-        val listing = repository.postsOfSubreddit(subReddit = "bar", pageSize = 3)
+        val listing = repository.postsOfSubreddit(subredditName = "bar", pageSize = 3)
         // trigger load
         getPagedList(listing)
         assertThat(getNetworkState(listing), `is`(NetworkState.error("xxx")))
@@ -115,7 +115,7 @@ class InMemoryRepositoryTest(type : RedditPostRepository.Type) {
     fun retryInInitialLoad() {
         fakeApi.addPost(postFactory.createRedditPost("foo"))
         fakeApi.failureMsg = "xxx"
-        val listing = repository.postsOfSubreddit(subReddit = "foo", pageSize = 3)
+        val listing = repository.postsOfSubreddit(subredditName = "foo", pageSize = 3)
         // trigger load
         val pagedList = getPagedList(listing)
         assertThat(pagedList.size, `is`(0))
@@ -141,7 +141,7 @@ class InMemoryRepositoryTest(type : RedditPostRepository.Type) {
     fun retryAfterInitialFails() {
         val posts = (0..10).map { postFactory.createRedditPost("bar") }
         posts.forEach(fakeApi::addPost)
-        val listing = repository.postsOfSubreddit(subReddit = "bar", pageSize = 2)
+        val listing = repository.postsOfSubreddit(subredditName = "bar", pageSize = 2)
         val list = getPagedList(listing)
         assertThat("test sanity, we should not load everything",
                 list.size < posts.size, `is`(true))
@@ -162,7 +162,7 @@ class InMemoryRepositoryTest(type : RedditPostRepository.Type) {
     fun refresh() {
         val postsV1 = (0..5).map { postFactory.createRedditPost("bar") }
         postsV1.forEach(fakeApi::addPost)
-        val listing = repository.postsOfSubreddit(subReddit = "bar", pageSize = 5)
+        val listing = repository.postsOfSubreddit(subredditName = "bar", pageSize = 5)
         val list = getPagedList(listing)
         list.loadAround(10)
         val postsV2 = (0..10).map { postFactory.createRedditPost("bar") }
@@ -192,7 +192,7 @@ class InMemoryRepositoryTest(type : RedditPostRepository.Type) {
         posts.forEach(fakeApi::addPost)
 
         fakeApi.failureMsg = "xx"
-        val listing = repository.postsOfSubreddit(subReddit = "bar", pageSize = 5)
+        val listing = repository.postsOfSubreddit(subredditName = "bar", pageSize = 5)
         getPagedList(listing)
         assertThat(getNetworkState(listing), `is`(NetworkState.error("xx")))
         fakeApi.failureMsg = null
