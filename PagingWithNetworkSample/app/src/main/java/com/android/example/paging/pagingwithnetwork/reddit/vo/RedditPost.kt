@@ -23,7 +23,11 @@ import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "posts",
+<<<<<<< HEAD
         indices = [(Index(value = ["subreddit"], unique = false))])
+=======
+        indices = [Index(value = ["subreddit"], unique = false)])
+>>>>>>> 8e77a8b90bec775bfdf9fa2244686f73265cdad2
 data class RedditPost(
         @PrimaryKey
         @SerializedName("name")
